@@ -1,0 +1,61 @@
+﻿name,nutrient_nbr,unit,nutrient_id
+Energy,208,KCAL,1008
+Total Water,255,L,1051
+Total Fat,204,G,1004
+Total Protein,203,G,1003
+Total Carbohydrates,205,G,1005
+Total Fiber (dietary),291,G,1079
+Vitamin A (RAE),320,UG,1106
+Retinol,319,UG,1105
+Vitamin C (total ascorbic acid),401,MG,1162
+Vitamin D (D2 + D3),328,UG,1114
+Vitamin E (alpha-tocopherol),323,MG,1109
+Vitamin E added,573,MG,1242
+Vitamin K,430,UG,1185
+Thiamin (B1),404,MG,1165
+Riboflavin (B2),405,MG,1166
+Niacin (B3),406,MG,1167
+Niacin added (B3),576,MG,1245
+Vitamin B6,415,MG,1175
+Folate DFE (B9),435,UG,1190
+Folic acid (B9),431,UG,1186
+Vitamin B12,418,UG,1178
+Pantothenic acid (B5),410,MG,1170
+Biotin (B7),416,UG,1176
+Choline,421,MG,1180
+Calcium,301,MG,1087
+Chromium,310,UG,1096
+Copper,312,MG,1098
+Fluoride,313,UG,1099
+Iodine,314,UG,1100
+Iron,303,MG,1089
+Magnesium,304,MG,1090
+Manganese,315,MG,1101
+Molybdenum,316,UG,1102
+Phosphorus,305,MG,1091
+Selenium,317,UG,1103
+Zinc,309,MG,1095
+Potassium,306,MG,1092
+Sodium,307,MG,1093
+Chloride,9999,G,9999
+Linoleic acid,618,G,1269
+α-Linolenic Acid (ALA),619,G,1270
+docosahexaenoic acid (DHA),621,G,1272
+Eicosapentaenoic acid (EPA),629,G,1278
+Docosapentaenoic acid (DPA),631,G,1280
+Cholesterol,601,MG,1253
+Trans fatty acids,605,G,1257
+Saturated fatty acids,606,G,1258
+Histidine,512,G,1221
+Isoleucine,503,G,1212
+Leucine,504,G,1213
+Lysine,505,G,1214
+Methionine,506,G,1215
+Phenylalanine,508,G,1217
+Tyrosine,509,G,1218
+Threonine,502,G,1211
+Tryptophan,501,G,1210
+Valine,510,G,1219
+Total Sugars,269,G,2000
+Caffeine,262,MG,1057
+Alcohol,221,G,1018

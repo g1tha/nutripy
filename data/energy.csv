@@ -1,0 +1,101 @@
+min_age,gender,maternity,stage,PAL,min_BMI,constant,age_param,height_param,weight_param,growth_cost,gestation_param,energy_deposition,milk_production,energy_mobilization
+0,male,none,none,none,none,-716.45,-1,17.82,15.06,200,0,0,0,0
+0.25,male,none,none,none,none,-716.45,-1,17.82,15.06,50,0,0,0,0
+0.5,male,none,none,none,none,-716.45,-1,17.82,15.06,20,0,0,0,0
+1,male,none,none,none,none,-716.45,-1,17.82,15.06,20,0,0,0,0
+3,male,none,none,Inactive,none,-447.51,3.68,13.01,13.15,20,0,0,0,0
+3,male,none,none,Low active,none,19.12,3.68,8.62,20.28,20,0,0,0,0
+3,male,none,none,Active,none,-388.19,3.68,12.66,20.46,20,0,0,0,0
+3,male,none,none,Very active,none,-671.75,3.68,15.38,23.25,20,0,0,0,0
+4,male,none,none,Inactive,none,-447.51,3.68,13.01,13.15,15,0,0,0,0
+4,male,none,none,Low active,none,19.12,3.68,8.62,20.28,15,0,0,0,0
+4,male,none,none,Active,none,-388.19,3.68,12.66,20.46,15,0,0,0,0
+4,male,none,none,Very active,none,-671.75,3.68,15.38,23.25,15,0,0,0,0
+9,male,none,none,Inactive,none,-447.51,3.68,13.01,13.15,25,0,0,0,0
+9,male,none,none,Low active,none,19.12,3.68,8.62,20.28,25,0,0,0,0
+9,male,none,none,Active,none,-388.19,3.68,12.66,20.46,25,0,0,0,0
+9,male,none,none,Very active,none,-671.75,3.68,15.38,23.25,25,0,0,0,0
+14,male,none,none,Inactive,none,-447.51,3.68,13.01,13.15,20,0,0,0,0
+14,male,none,none,Low active,none,19.12,3.68,8.62,20.28,20,0,0,0,0
+14,male,none,none,Active,none,-388.19,3.68,12.66,20.46,20,0,0,0,0
+14,male,none,none,Very active,none,-671.75,3.68,15.38,23.25,20,0,0,0,0
+19,male,none,none,Inactive,none,753.07,-10.83,6.5,14.1,0,0,0,0,0
+19,male,none,none,Low active,none,581.47,-10.83,8.3,14.94,0,0,0,0,0
+19,male,none,none,Active,none,"1,004.82",-10.83,6.52,15.91,0,0,0,0,0
+19,male,none,none,Very active,none,-517.88,-10.83,15.61,19.11,0,0,0,0,0
+0,female,none,none,none,none,-69.15,80,2.65,54.15,180,0,0,0,0
+0.25,female,none,none,none,none,-69.15,80,2.65,54.15,60,0,0,0,0
+0.5,female,none,none,none,none,-69.15,80,2.65,54.15,20,0,0,0,0
+1,female,none,none,none,none,-69.15,80,2.65,54.15,15,0,0,0,0
+3,female,none,none,Inactive,none,55.59,-22.25,8.43,17.07,15,0,0,0,0
+3,female,none,none,Low active,none,-297.54,-22.25,12.77,14.73,15,0,0,0,0
+3,female,none,none,Active,none,-189.55,-22.25,11.74,18.34,15,0,0,0,0
+3,female,none,none,Very active,none,-709.59,-22.25,18.22,14.25,15,0,0,0,0
+4,female,none,none,Inactive,none,55.59,-22.25,8.43,17.07,15,0,0,0,0
+4,female,none,none,Low active,none,-297.54,-22.25,12.77,14.73,15,0,0,0,0
+4,female,none,none,Active,none,-189.55,-22.25,11.74,18.34,15,0,0,0,0
+4,female,none,none,Very active,none,-709.59,-22.25,18.22,14.25,15,0,0,0,0
+9,female,none,none,Inactive,none,55.59,-22.25,8.43,17.07,30,0,0,0,0
+9,female,none,none,Low active,none,-297.54,-22.25,12.77,14.73,30,0,0,0,0
+9,female,none,none,Active,none,-189.55,-22.25,11.74,18.34,30,0,0,0,0
+9,female,none,none,Very active,none,-709.59,-22.25,18.22,14.25,30,0,0,0,0
+14,female,none,none,Inactive,none,55.59,-22.25,8.43,17.07,20,0,0,0,0
+14,female,none,none,Low active,none,-297.54,-22.25,12.77,14.73,20,0,0,0,0
+14,female,none,none,Active,none,-189.55,-22.25,11.74,18.34,20,0,0,0,0
+14,female,none,none,Very active,none,-709.59,-22.25,18.22,14.25,20,0,0,0,0
+19,female,none,none,Inactive,none,584.9,-7.01,5.72,11.71,0,0,0,0,0
+19,female,none,none,Low active,none,575.77,-7.01,6.6,12.14,0,0,0,0,0
+19,female,none,none,Active,none,710.25,-7.01,6.54,12.34,0,0,0,0,0
+19,female,none,none,Very active,none,511.83,-7.01,9.07,12.56,0,0,0,0,0
+19,female,pregnant,1,Inactive,none,584.9,-7.01,5.72,11.71,0,0,0,0,0
+19,female,pregnant,1,Low active,none,575.77,-7.01,6.6,12.14,0,0,0,0,0
+19,female,pregnant,1,Active,none,710.25,-7.01,6.54,12.34,0,0,0,0,0
+19,female,pregnant,1,Very active,none,511.83,-7.01,9.07,12.56,0,0,0,0,0
+19,female,pregnant,2,Inactive,0,1131.2,-2.04,0.34,12.15,0,9.16,300,0,0
+19,female,pregnant,2,Inactive,18.5,1131.2,-2.04,0.34,12.15,0,9.16,200,0,0
+19,female,pregnant,2,Inactive,25,1131.2,-2.04,0.34,12.15,0,9.16,150,0,0
+19,female,pregnant,2,Inactive,30,1131.2,-2.04,0.34,12.15,0,9.16,-50,0,0
+19,female,pregnant,2,Low active,0,693.35,-2.04,5.73,10.2,0,9.16,300,0,0
+19,female,pregnant,2,Low active,18.5,693.35,-2.04,5.73,10.2,0,9.16,200,0,0
+19,female,pregnant,2,Low active,25,693.35,-2.04,5.73,10.2,0,9.16,150,0,0
+19,female,pregnant,2,Low active,30,693.35,-2.04,5.73,10.2,0,9.16,-50,0,0
+19,female,pregnant,2,Active,0,-223.84,-2.04,13.23,8.15,0,9.16,300,0,0
+19,female,pregnant,2,Active,18.5,-223.84,-2.04,13.23,8.15,0,9.16,200,0,0
+19,female,pregnant,2,Active,25,-223.84,-2.04,13.23,8.15,0,9.16,150,0,0
+19,female,pregnant,2,Active,30,-223.84,-2.04,13.23,8.15,0,9.16,-50,0,0
+19,female,pregnant,2,Very active,0,-779.72,-2.04,18.45,8.73,0,9.16,300,0,0
+19,female,pregnant,2,Very active,18.5,-779.72,-2.04,18.45,8.73,0,9.16,200,0,0
+19,female,pregnant,2,Very active,25,-779.72,-2.04,18.45,8.73,0,9.16,150,0,0
+19,female,pregnant,2,Very active,30,-779.72,-2.04,18.45,8.73,0,9.16,-50,0,0
+19,female,pregnant,3,Inactive,0,1131.2,-2.04,0.34,12.15,0,9.16,300,0,0
+19,female,pregnant,3,Inactive,18.5,1131.2,-2.04,0.34,12.15,0,9.16,200,0,0
+19,female,pregnant,3,Inactive,25,1131.2,-2.04,0.34,12.15,0,9.16,150,0,0
+19,female,pregnant,3,Inactive,30,1131.2,-2.04,0.34,12.15,0,9.16,-50,0,0
+19,female,pregnant,3,Low active,0,693.35,-2.04,5.73,10.2,0,9.16,300,0,0
+19,female,pregnant,3,Low active,18.5,693.35,-2.04,5.73,10.2,0,9.16,200,0,0
+19,female,pregnant,3,Low active,25,693.35,-2.04,5.73,10.2,0,9.16,150,0,0
+19,female,pregnant,3,Low active,30,693.35,-2.04,5.73,10.2,0,9.16,-50,0,0
+19,female,pregnant,3,Active,0,-223.84,-2.04,13.23,8.15,0,9.16,300,0,0
+19,female,pregnant,3,Active,18.5,-223.84,-2.04,13.23,8.15,0,9.16,200,0,0
+19,female,pregnant,3,Active,25,-223.84,-2.04,13.23,8.15,0,9.16,150,0,0
+19,female,pregnant,3,Active,30,-223.84,-2.04,13.23,8.15,0,9.16,-50,0,0
+19,female,pregnant,3,Very active,0,-779.72,-2.04,18.45,8.73,0,9.16,300,0,0
+19,female,pregnant,3,Very active,18.5,-779.72,-2.04,18.45,8.73,0,9.16,200,0,0
+19,female,pregnant,3,Very active,25,-779.72,-2.04,18.45,8.73,0,9.16,150,0,0
+19,female,pregnant,3,Very active,30,-779.72,-2.04,18.45,8.73,0,9.16,-50,0,0
+14,female,breastfeeding,1,Inactive,none,55.59,-22.25,8.43,17.07,20,0,0,540,-140
+14,female,breastfeeding,1,Low active,none,-297.54,-22.25,12.77,14.73,20,0,0,540,-140
+14,female,breastfeeding,1,Active,none,-189.55,-22.25,11.74,18.34,20,0,0,540,-140
+14,female,breastfeeding,1,Very active,none,-709.59,-22.25,18.22,14.25,20,0,0,540,-140
+14,female,breastfeeding,2,Inactive,none,55.59,-22.25,8.43,17.07,20,0,0,380,0
+14,female,breastfeeding,2,Low active,none,-297.54,-22.25,12.77,14.73,20,0,0,380,0
+14,female,breastfeeding,2,Active,none,-189.55,-22.25,11.74,18.34,20,0,0,380,0
+14,female,breastfeeding,2,Very active,none,-709.59,-22.25,18.22,14.25,20,0,0,380,0
+19,female,breastfeeding,1,Inactive,none,584.9,-7.01,5.72,11.71,0,0,0,540,-140
+19,female,breastfeeding,1,Low active,none,575.77,-7.01,6.6,12.14,0,0,0,540,-140
+19,female,breastfeeding,1,Active,none,710.25,-7.01,6.54,12.34,0,0,0,540,-140
+19,female,breastfeeding,1,Very active,none,511.83,-7.01,9.07,12.56,0,0,0,540,-140
+19,female,breastfeeding,2,Inactive,none,584.9,-7.01,5.72,11.71,0,0,0,380,0
+19,female,breastfeeding,2,Low active,none,575.77,-7.01,6.6,12.14,0,0,0,380,0
+19,female,breastfeeding,2,Active,none,710.25,-7.01,6.54,12.34,0,0,0,380,0
+19,female,breastfeeding,2,Very active,none,511.83,-7.01,9.07,12.56,0,0,0,380,0

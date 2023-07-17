@@ -9,7 +9,7 @@ import json
 
 
 def main():
-    dri_energy('data/sources/energy.csv')
+    ...
 
 def download_fda_nutrients():
     if not os.path.exists("data/sources"):
@@ -24,9 +24,11 @@ def download_fda_nutrients():
 
 
 def read_dri_html():
+    if not os.path.exists("data"):
+        os.makedirs("data")
     # Load standardised nutrient names
-    with open("nutrient_names_fda.json") as f:
-        nutrient_names_fda = json.load(f)
+    with open("data/nutrient_names_US.json") as f:
+        nutrient_names_US = json.load(f)
     # read rdas for minerals, vitamins and macros
     minerals_rda = parse_dri_html(
         "https://www.ncbi.nlm.nih.gov/books/NBK545442/table/appJ_tab3/?report=objectonly"
@@ -59,15 +61,13 @@ def read_dri_html():
     )
     # Combine macros, vitamins and minerals into one dataframe
     rda = macros_rda.join(vitamins_rda).join(minerals_rda)
-    # Rename all columns to standardised names from nutrient_names_fda.json
-    rda.rename(columns=nutrient_names_fda, inplace=True)
+    # Rename all columns to standardised names from nutrient_names_US.json
+    rda.rename(columns=nutrient_names_US, inplace=True)
     # Convert units: [copper: {UG: MG}, fluoride: {MG: UG}]
     rda['Copper'] = pd.to_numeric(rda['Copper']).div(1000).fillna(0)
     rda['Fluoride'] = pd.to_numeric(rda['Fluoride']).mul(1000).fillna(0)
-    # Export rdas to a json file, first by seperating out the index into a nested dictionary.
-    rda_dict = fda_to_dict(rda)
-    with open("rdas.json", "w", encoding="utf8") as file:
-        json.dump(rda_dict, file, ensure_ascii=False)
+    # Export rdas to a csv.
+    rda.replace('',0).to_csv('data/rda.csv', encoding='utf-8-sig')
 
     # Read total upper limits for vitamins and minerals
     minerals_tul = parse_dri_html(
@@ -124,16 +124,14 @@ def read_dri_html():
     )
     # Combine vitamins and minerals into one dataframe
     tul = vitamins_tul.join(minerals_tul)
-    # Rename all columns to standardised names from nutrient_names_fda.json
-    tul.rename(columns=nutrient_names_fda, inplace=True)
+    # Rename all columns to standardised names from nutrient_names_US.json
+    tul.rename(columns=nutrient_names_US, inplace=True)
     # Convert units: [copper: {UG: MG}, fluoride: {MG: UG}, Phosphorus: {G: MG}]
     tul['Copper'] = pd.to_numeric(tul['Copper']).div(1000).fillna(0)
     tul['Fluoride'] = pd.to_numeric(tul['Fluoride']).mul(1000).fillna(0)
     tul['Phosphorus'] = pd.to_numeric(tul['Phosphorus']).mul(1000).fillna(0)
-    # Export tuls to a json file, first by seperating out the index into a nested dictionary.
-    tul_dict = fda_to_dict(tul)
-    with open("tuls.json", "w", encoding="utf8") as file:
-        json.dump(tul_dict, file, ensure_ascii=False)
+    # Export tuls to a csv.
+    tul.replace('',0).to_csv('data/tul.csv', encoding='utf-8-sig')
 
     # energy_distribution = pd.read_html(
     #     requests.get(
@@ -233,79 +231,6 @@ def parse_dri_html(url):
     return df
 
 
-def fda_to_dict(df):
-    # turn dataframe into dictionary
-    dict = df.to_dict(orient="index")
-    # Remove empty keys and convert strings to numbers
-    for key, nutrient_requirements in dict.items():
-        dict[key] = {
-            nutrient: format_number(requirements)
-            for nutrient, requirements in nutrient_requirements.items()
-            if requirements
-        }
-    dict_copy = {}
-    for key, nutrient_requirements in dict.items():
-        age, sex, category = key
-        if age not in dict_copy:
-            dict_copy[age] = {}
-        if sex not in dict_copy[age]:
-            dict_copy[age][sex] = {}
-        dict_copy[age][sex][category] = nutrient_requirements
-    return dict_copy
-
-
-def energy_to_dict(df):
-    # turn dataframe into dictionary
-    dict = df.to_dict(orient="index")
-    # Remove empty keys and convert strings to numbers
-    for key, nutrient_requirements in dict.items():
-        dict[key] = {
-            nutrient: format_number(requirements)
-            for nutrient, requirements in nutrient_requirements.items()
-            if requirements
-        }
-    dict_copy = {}
-    for key, nutrient_requirements in dict.items():
-        age, sex, category, stage, pal, min_BMI = key
-        if age not in dict_copy:
-            dict_copy[age] = {}
-        if sex not in dict_copy[age]:
-            dict_copy[age][sex] = {}
-        if category not in dict_copy[age][sex]:
-            dict_copy[age][sex][category] = {}
-        if stage not in dict_copy[age][sex][category]:
-            dict_copy[age][sex][category][stage] = {}
-        if pal not in dict_copy[age][sex][category][stage]:
-            dict_copy[age][sex][category][stage][pal] = {}
-        dict_copy[age][sex][category][stage][pal][min_BMI] = nutrient_requirements
-    return dict_copy
-
-def format_number(s):
-    try:
-        n = float(s)
-        if n.is_integer():
-            return int(round(n,0))
-        else:
-            return float(s)
-    except ValueError:
-        return s
-
-
-def dri_protein(file):
-    # delete and just use the json file
-    df = pd.read_csv(file)
-    df = df.set_index(["min_age", "gender", "maternity"])
-    protein_dict = fda_to_dict(df)
-    with open("protein.json", "w", encoding="utf8") as file:
-        json.dump(protein_dict, file, ensure_ascii=False)
-
-def dri_energy(file):
-    # delete and just use the json file
-    df = pd.read_csv(file)
-    df = df.set_index(["min_age", "gender", "maternity", "stage", "PAL", "min_BMI"])
-    energy_dict = energy_to_dict(df)
-    with open("energy.json", "w", encoding="utf8") as file:
-        json.dump(energy_dict, file, ensure_ascii=False)
 
 if __name__ == "__main__":
     main()
