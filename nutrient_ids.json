@@ -1,0 +1,302 @@
+{
+    "Energy": {
+        "nutrient_nbr": 208,
+        "unit": "KCAL",
+        "nutrient_id": 1008
+    },
+    "Total Water": {
+        "nutrient_nbr": 255,
+        "unit": "L",
+        "nutrient_id": 1051
+    },
+    "Total Fat": {
+        "nutrient_nbr": 204,
+        "unit": "G",
+        "nutrient_id": 1004
+    },
+    "Total Protein": {
+        "nutrient_nbr": 203,
+        "unit": "G",
+        "nutrient_id": 1003
+    },
+    "Total Carbohydrates": {
+        "nutrient_nbr": 205,
+        "unit": "G",
+        "nutrient_id": 1005
+    },
+    "Total Fiber (dietary)": {
+        "nutrient_nbr": 291,
+        "unit": "G",
+        "nutrient_id": 1079
+    },
+    "Vitamin A (RAE)": {
+        "nutrient_nbr": 320,
+        "unit": "UG",
+        "nutrient_id": 1106
+    },
+    "Retinol": {
+        "nutrient_nbr": 319,
+        "unit": "UG",
+        "nutrient_id": 1105
+    },
+    "Vitamin C (total ascorbic acid)": {
+        "nutrient_nbr": 401,
+        "unit": "MG",
+        "nutrient_id": 1162
+    },
+    "Vitamin D (D2 + D3)": {
+        "nutrient_nbr": 328,
+        "unit": "UG",
+        "nutrient_id": 1114
+    },
+    "Vitamin E (alpha-tocopherol)": {
+        "nutrient_nbr": 323,
+        "unit": "MG",
+        "nutrient_id": 1109
+    },
+    "Vitamin E added": {
+        "nutrient_nbr": 573,
+        "unit": "MG",
+        "nutrient_id": 1242
+    },
+    "Vitamin K": {
+        "nutrient_nbr": 430,
+        "unit": "UG",
+        "nutrient_id": 1185
+    },
+    "Thiamin (B1)": {
+        "nutrient_nbr": 404,
+        "unit": "MG",
+        "nutrient_id": 1165
+    },
+    "Riboflavin (B2)": {
+        "nutrient_nbr": 405,
+        "unit": "MG",
+        "nutrient_id": 1166
+    },
+    "Niacin (B3)": {
+        "nutrient_nbr": 406,
+        "unit": "MG",
+        "nutrient_id": 1167
+    },
+    "Niacin added (B3)": {
+        "nutrient_nbr": 576,
+        "unit": "MG",
+        "nutrient_id": 1245
+    },
+    "Vitamin B6": {
+        "nutrient_nbr": 415,
+        "unit": "MG",
+        "nutrient_id": 1175
+    },
+    "Folate DFE (B9)": {
+        "nutrient_nbr": 435,
+        "unit": "UG",
+        "nutrient_id": 1190
+    },
+    "Folic acid (B9)": {
+        "nutrient_nbr": 431,
+        "unit": "UG",
+        "nutrient_id": 1186
+    },
+    "Vitamin B12": {
+        "nutrient_nbr": 418,
+        "unit": "UG",
+        "nutrient_id": 1178
+    },
+    "Pantothenic acid (B5)": {
+        "nutrient_nbr": 410,
+        "unit": "MG",
+        "nutrient_id": 1170
+    },
+    "Biotin (B7)": {
+        "nutrient_nbr": 416,
+        "unit": "UG",
+        "nutrient_id": 1176
+    },
+    "Choline": {
+        "nutrient_nbr": 421,
+        "unit": "MG",
+        "nutrient_id": 1180
+    },
+    "Calcium": {
+        "nutrient_nbr": 301,
+        "unit": "MG",
+        "nutrient_id": 1087
+    },
+    "Chromium": {
+        "nutrient_nbr": 310,
+        "unit": "UG",
+        "nutrient_id": 1096
+    },
+    "Copper": {
+        "nutrient_nbr": 312,
+        "unit": "MG",
+        "nutrient_id": 1098
+    },
+    "Fluoride": {
+        "nutrient_nbr": 313,
+        "unit": "UG",
+        "nutrient_id": 1099
+    },
+    "Iodine": {
+        "nutrient_nbr": 314,
+        "unit": "UG",
+        "nutrient_id": 1100
+    },
+    "Iron": {
+        "nutrient_nbr": 303,
+        "unit": "MG",
+        "nutrient_id": 1089
+    },
+    "Magnesium": {
+        "nutrient_nbr": 304,
+        "unit": "MG",
+        "nutrient_id": 1090
+    },
+    "Manganese": {
+        "nutrient_nbr": 315,
+        "unit": "MG",
+        "nutrient_id": 1101
+    },
+    "Molybdenum": {
+        "nutrient_nbr": 316,
+        "unit": "UG",
+        "nutrient_id": 1102
+    },
+    "Phosphorus": {
+        "nutrient_nbr": 305,
+        "unit": "MG",
+        "nutrient_id": 1091
+    },
+    "Selenium": {
+        "nutrient_nbr": 317,
+        "unit": "UG",
+        "nutrient_id": 1103
+    },
+    "Zinc": {
+        "nutrient_nbr": 309,
+        "unit": "MG",
+        "nutrient_id": 1095
+    },
+    "Potassium": {
+        "nutrient_nbr": 306,
+        "unit": "MG",
+        "nutrient_id": 1092
+    },
+    "Sodium": {
+        "nutrient_nbr": 307,
+        "unit": "MG",
+        "nutrient_id": 1093
+    },
+    "Chloride": {
+        "nutrient_nbr": 9999,
+        "unit": "G",
+        "nutrient_id": 9999
+    },
+    "Linoleic acid": {
+        "nutrient_nbr": 618,
+        "unit": "G",
+        "nutrient_id": 1269
+    },
+    "α-Linolenic Acid (ALA)": {
+        "nutrient_nbr": 619,
+        "unit": "G",
+        "nutrient_id": 1270
+    },
+    "docosahexaenoic acid (DHA)": {
+        "nutrient_nbr": 621,
+        "unit": "G",
+        "nutrient_id": 1272
+    },
+    "Eicosapentaenoic acid (EPA)": {
+        "nutrient_nbr": 629,
+        "unit": "G",
+        "nutrient_id": 1278
+    },
+    "Docosapentaenoic acid (DPA)": {
+        "nutrient_nbr": 631,
+        "unit": "G",
+        "nutrient_id": 1280
+    },
+    "Cholesterol": {
+        "nutrient_nbr": 601,
+        "unit": "MG",
+        "nutrient_id": 1253
+    },
+    "Trans fatty acids": {
+        "nutrient_nbr": 605,
+        "unit": "G",
+        "nutrient_id": 1257
+    },
+    "Saturated fatty acids": {
+        "nutrient_nbr": 606,
+        "unit": "G",
+        "nutrient_id": 1258
+    },
+    "Histidine": {
+        "nutrient_nbr": 512,
+        "unit": "G",
+        "nutrient_id": 1221
+    },
+    "Isoleucine": {
+        "nutrient_nbr": 503,
+        "unit": "G",
+        "nutrient_id": 1212
+    },
+    "Leucine": {
+        "nutrient_nbr": 504,
+        "unit": "G",
+        "nutrient_id": 1213
+    },
+    "Lysine": {
+        "nutrient_nbr": 505,
+        "unit": "G",
+        "nutrient_id": 1214
+    },
+    "Methionine": {
+        "nutrient_nbr": 506,
+        "unit": "G",
+        "nutrient_id": 1215
+    },
+    "Phenylalanine": {
+        "nutrient_nbr": 508,
+        "unit": "G",
+        "nutrient_id": 1217
+    },
+    "Tyrosine": {
+        "nutrient_nbr": 509,
+        "unit": "G",
+        "nutrient_id": 1218
+    },
+    "Threonine": {
+        "nutrient_nbr": 502,
+        "unit": "G",
+        "nutrient_id": 1211
+    },
+    "Tryptophan": {
+        "nutrient_nbr": 501,
+        "unit": "G",
+        "nutrient_id": 1210
+    },
+    "Valine": {
+        "nutrient_nbr": 510,
+        "unit": "G",
+        "nutrient_id": 1219
+    },
+    "Total Sugars": {
+        "nutrient_nbr": 269,
+        "unit": "G",
+        "nutrient_id": 2000
+    },
+    "Caffeine": {
+        "nutrient_nbr": 262,
+        "unit": "MG",
+        "nutrient_id": 1057
+    },
+    "Alcohol": {
+        "nutrient_nbr": 221,
+        "unit": "G",
+        "nutrient_id": 1018
+    }
+}

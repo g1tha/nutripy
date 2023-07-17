@@ -1,0 +1,326 @@
+{
+    "Total Water (L/d)": {
+        "name": "Water",
+        "nutrient_nbr": 255,
+        "unit": "L",
+        "nutrient_id": 1051,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Carbohydrate (g/d)": {
+        "name": "Carbohydrates",
+        "nutrient_nbr": 205,
+        "unit": "G",
+        "nutrient_id": 1005,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Total Fiber (g/d)": {
+        "name": "Fiber, total dietary",
+        "nutrient_nbr": 291,
+        "unit": "G",
+        "nutrient_id": 1079,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Fat (g/d)": {
+        "name": "Total lipid (fat)",
+        "nutrient_nbr": 204,
+        "unit": "G",
+        "nutrient_id": 1004,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Linoleic Acid (g/d)": {
+        "name": "Linoleic acid",
+        "nutrient_nbr": 618,
+        "unit": "G",
+        "nutrient_id": 1269,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "α-Linolenic Acid (g/d)": {
+        "name": "α-Linolenic Acid (ALA)",
+        "nutrient_nbr": 619,
+        "unit": "G",
+        "nutrient_id": 1270,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Protein (g/d)": {
+        "name": "Protein",
+        "nutrient_nbr": 203,
+        "unit": "G",
+        "nutrient_id": 1003,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Vitamin A (μg/d)": {
+        "name": "Vitamin A, RAE",
+        "nutrient_nbr": 320,
+        "unit": "UG",
+        "nutrient_id": 1106,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Vitamin C (mg/d)": {
+        "name": "Vitamin C, total ascorbic acid",
+        "nutrient_nbr": 401,
+        "unit": "MG",
+        "nutrient_id": 1162,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Vitamin D (μg/d)": {
+        "name": "Vitamin D (D2 + D3)",
+        "nutrient_nbr": 328,
+        "unit": "UG",
+        "nutrient_id": 1114,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Vitamin E (mg/d)": {
+        "name": "Vitamin E (alpha-tocopherol)",
+        "nutrient_nbr": 323,
+        "unit": "MG",
+        "nutrient_id": 1109,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Vitamin K (μg/d)": {
+        "name": "Vitamin K",
+        "nutrient_nbr": 430,
+        "unit": "UG",
+        "nutrient_id": 1185,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Thiamin (mg/d)": {
+        "name": "Thiamin",
+        "nutrient_nbr": 404,
+        "unit": "MG",
+        "nutrient_id": 1165,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Riboflavin (mg/d)": {
+        "name": "Riboflavin",
+        "nutrient_nbr": 405,
+        "unit": "MG",
+        "nutrient_id": 1166,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Niacin (mg/d)": {
+        "name": "Niacin",
+        "nutrient_nbr": 406,
+        "unit": "MG",
+        "nutrient_id": 1167,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Vitamin B6 (mg/d)": {
+        "name": "Vitamin B-6",
+        "nutrient_nbr": 415,
+        "unit": "MG",
+        "nutrient_id": 1175,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Folate (μg/d)": {
+        "name": "Folate, total",
+        "nutrient_nbr": 417,
+        "unit": "UG",
+        "nutrient_id": 1177,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Vitamin B12 (μg/d)": {
+        "name": "Vitamin B-12",
+        "nutrient_nbr": 418,
+        "unit": "UG",
+        "nutrient_id": 1178,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Pantothenic Acid (mg/d)": {
+        "name": "Pantothenic acid",
+        "nutrient_nbr": 410,
+        "unit": "MG",
+        "nutrient_id": 1170,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Biotin (μg/d)": {
+        "name": "Biotin",
+        "nutrient_nbr": 416,
+        "unit": "UG",
+        "nutrient_id": 1176,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Choline (mg/d)": {
+        "name": "Choline, total",
+        "nutrient_nbr": 421,
+        "unit": "MG",
+        "nutrient_id": 1180,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Calcium (mg/d)": {
+        "name": "Calcium, Ca",
+        "nutrient_nbr": 301,
+        "unit": "MG",
+        "nutrient_id": 1087,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Chromium (μg/d)": {
+        "name": "Chromium, Cr",
+        "nutrient_nbr": 310,
+        "unit": "UG",
+        "nutrient_id": 1096,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Copper (μg/d)": {
+        "name": "Copper, Cu",
+        "nutrient_nbr": 312,
+        "unit": "MG",
+        "nutrient_id": 1098,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Fluoride (mg/d)": {
+        "name": "Fluoride, F",
+        "nutrient_nbr": 313,
+        "unit": "UG",
+        "nutrient_id": 1099,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Iodine (μg/d)": {
+        "name": "Iodine, I",
+        "nutrient_nbr": 314,
+        "unit": "UG",
+        "nutrient_id": 1100,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Iron (mg/d)": {
+        "name": "Iron, Fe",
+        "nutrient_nbr": 303,
+        "unit": "MG",
+        "nutrient_id": 1089,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Magnesium (mg/d)": {
+        "name": "Magnesium, Mg",
+        "nutrient_nbr": 304,
+        "unit": "MG",
+        "nutrient_id": 1090,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Manganese (mg/d)": {
+        "name": "Manganese, Mn",
+        "nutrient_nbr": 315,
+        "unit": "MG",
+        "nutrient_id": 1101,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Molybdenum (μg/d)": {
+        "name": "Molybdenum, Mo",
+        "nutrient_nbr": 316,
+        "unit": "UG",
+        "nutrient_id": 1102,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Phosphorus (mg/d)": {
+        "name": "Phosphorus, P",
+        "nutrient_nbr": 305,
+        "unit": "MG",
+        "nutrient_id": 1091,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Selenium (μg/d)": {
+        "name": "Selenium, Se",
+        "nutrient_nbr": 317,
+        "unit": "UG",
+        "nutrient_id": 1103,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Zinc (mg/d)": {
+        "name": "Zinc, Zn",
+        "nutrient_nbr": 309,
+        "unit": "MG",
+        "nutrient_id": 1095,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Potassium (mg/d)": {
+        "name": "Potassium, K",
+        "nutrient_nbr": 306,
+        "unit": "MG",
+        "nutrient_id": 1092,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Sodium (mg/d)": {
+        "name": "Sodium, Na",
+        "nutrient_nbr": 307,
+        "unit": "MG",
+        "nutrient_id": 1093,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    },
+    "Chloride (g/d)": {
+        "name": "Chloride, Cl-",
+        "nutrient_nbr": 9999,
+        "unit": "G",
+        "nutrient_id": 9999,
+        "rda_lower": "",
+        "rda_upper": "",
+        "ul": ""
+    }
+}

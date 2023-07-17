@@ -1,0 +1,492 @@
+{
+    "0.0": {
+        "none": {
+            "none": {
+                "Retinol": 600,
+                "Vitamin D (D2 + D3)": 25,
+                "Calcium": 1000,
+                "Fluoride": 700,
+                "Iron": 40,
+                "Selenium": 45,
+                "Zinc": 4
+            }
+        }
+    },
+    "0.5": {
+        "none": {
+            "none": {
+                "Retinol": 600,
+                "Vitamin D (D2 + D3)": 38,
+                "Calcium": 1500,
+                "Fluoride": 900,
+                "Iron": 40,
+                "Selenium": 60,
+                "Zinc": 5
+            }
+        }
+    },
+    "1.0": {
+        "none": {
+            "none": {
+                "Retinol": 600,
+                "Vitamin C (total ascorbic acid)": 400,
+                "Vitamin D (D2 + D3)": 63,
+                "Vitamin E added": 200,
+                "Niacin addd (B3)": 10,
+                "Vitamin B6": 30,
+                "Folic acid (B9)": 300,
+                "Choline (g/d)": 1,
+                "Calcium": 2500,
+                "Copper": 1,
+                "Fluoride": 1300,
+                "Iodine": 200,
+                "Iron": 40,
+                "Manganese": 2,
+                "Molybdenum": 300,
+                "Phosphorus": 3000,
+                "Selenium": 90,
+                "Zinc": 7,
+                "Chloride": 2.3
+            }
+        }
+    },
+    "4.0": {
+        "none": {
+            "none": {
+                "Retinol": 900,
+                "Vitamin C (total ascorbic acid)": 650,
+                "Vitamin D (D2 + D3)": 75,
+                "Vitamin E added": 300,
+                "Niacin addd (B3)": 15,
+                "Vitamin B6": 40,
+                "Folic acid (B9)": 400,
+                "Choline (g/d)": 1,
+                "Calcium": 2500,
+                "Copper": 3,
+                "Fluoride": 2200,
+                "Iodine": 300,
+                "Iron": 40,
+                "Manganese": 3,
+                "Molybdenum": 600,
+                "Phosphorus": 3000,
+                "Selenium": 150,
+                "Zinc": 12,
+                "Chloride": 2.9
+            }
+        }
+    },
+    "9.0": {
+        "male": {
+            "none": {
+                "Retinol": 1700,
+                "Vitamin C (total ascorbic acid)": 1200,
+                "Vitamin D (D2 + D3)": 100,
+                "Vitamin E added": 600,
+                "Niacin addd (B3)": 20,
+                "Vitamin B6": 60,
+                "Folic acid (B9)": 600,
+                "Choline (g/d)": 2,
+                "Calcium": 3000,
+                "Copper": 5,
+                "Fluoride": 10000,
+                "Iodine": 600,
+                "Iron": 40,
+                "Manganese": 6,
+                "Molybdenum": 1100,
+                "Phosphorus": 4000,
+                "Selenium": 280,
+                "Zinc": 23,
+                "Chloride": 3.4
+            }
+        },
+        "female": {
+            "none": {
+                "Retinol": 1700,
+                "Vitamin C (total ascorbic acid)": 1200,
+                "Vitamin D (D2 + D3)": 100,
+                "Vitamin E added": 600,
+                "Niacin addd (B3)": 20,
+                "Vitamin B6": 60,
+                "Folic acid (B9)": 600,
+                "Choline (g/d)": 2,
+                "Calcium": 3000,
+                "Copper": 5,
+                "Fluoride": 10000,
+                "Iodine": 600,
+                "Iron": 40,
+                "Manganese": 6,
+                "Molybdenum": 1100,
+                "Phosphorus": 4000,
+                "Selenium": 280,
+                "Zinc": 23,
+                "Chloride": 3.4
+            }
+        }
+    },
+    "14.0": {
+        "male": {
+            "none": {
+                "Retinol": 2800,
+                "Vitamin C (total ascorbic acid)": 1800,
+                "Vitamin D (D2 + D3)": 100,
+                "Vitamin E added": 800,
+                "Niacin addd (B3)": 30,
+                "Vitamin B6": 80,
+                "Folic acid (B9)": 800,
+                "Choline (g/d)": 3,
+                "Calcium": 3000,
+                "Copper": 8,
+                "Fluoride": 10000,
+                "Iodine": 900,
+                "Iron": 45,
+                "Manganese": 9,
+                "Molybdenum": 1700,
+                "Phosphorus": 4000,
+                "Selenium": 400,
+                "Zinc": 34,
+                "Chloride": 3.6
+            }
+        },
+        "female": {
+            "none": {
+                "Retinol": 2800,
+                "Vitamin C (total ascorbic acid)": 1800,
+                "Vitamin D (D2 + D3)": 100,
+                "Vitamin E added": 800,
+                "Niacin addd (B3)": 30,
+                "Vitamin B6": 80,
+                "Folic acid (B9)": 800,
+                "Choline (g/d)": 3,
+                "Calcium": 3000,
+                "Copper": 8,
+                "Fluoride": 10000,
+                "Iodine": 900,
+                "Iron": 45,
+                "Manganese": 9,
+                "Molybdenum": 1700,
+                "Phosphorus": 4000,
+                "Selenium": 400,
+                "Zinc": 34,
+                "Chloride": 3.6
+            },
+            "pregnant": {
+                "Retinol": 2800,
+                "Vitamin C (total ascorbic acid)": 1800,
+                "Vitamin D (D2 + D3)": 100,
+                "Vitamin E added": 800,
+                "Niacin addd (B3)": 30,
+                "Vitamin B6": 80,
+                "Folic acid (B9)": 800,
+                "Choline (g/d)": 3,
+                "Calcium": 3000,
+                "Copper": 8,
+                "Fluoride": 10000,
+                "Iodine": 900,
+                "Iron": 45,
+                "Manganese": 9,
+                "Molybdenum": 1700,
+                "Phosphorus": 3500,
+                "Selenium": 400,
+                "Zinc": 34,
+                "Chloride": 3.6
+            },
+            "breastfeeding": {
+                "Retinol": 2800,
+                "Vitamin C (total ascorbic acid)": 1800,
+                "Vitamin D (D2 + D3)": 100,
+                "Vitamin E added": 800,
+                "Niacin addd (B3)": 30,
+                "Vitamin B6": 80,
+                "Folic acid (B9)": 800,
+                "Choline (g/d)": 3,
+                "Calcium": 3000,
+                "Copper": 8,
+                "Fluoride": 10000,
+                "Iodine": 900,
+                "Iron": 45,
+                "Manganese": 9,
+                "Molybdenum": 1700,
+                "Phosphorus": 4000,
+                "Selenium": 400,
+                "Zinc": 34,
+                "Chloride": 3.6
+            }
+        }
+    },
+    "19.0": {
+        "male": {
+            "none": {
+                "Retinol": 3000,
+                "Vitamin C (total ascorbic acid)": 2000,
+                "Vitamin D (D2 + D3)": 100,
+                "Vitamin E added": 1000,
+                "Niacin addd (B3)": 35,
+                "Vitamin B6": 100,
+                "Folic acid (B9)": 1000,
+                "Choline (g/d)": 3.5,
+                "Calcium": 2500,
+                "Copper": 10,
+                "Fluoride": 10000,
+                "Iodine": 1100,
+                "Iron": 45,
+                "Manganese": 11,
+                "Molybdenum": 2000,
+                "Phosphorus": 4000,
+                "Selenium": 400,
+                "Zinc": 40,
+                "Chloride": 3.6
+            }
+        },
+        "female": {
+            "none": {
+                "Retinol": 3000,
+                "Vitamin C (total ascorbic acid)": 2000,
+                "Vitamin D (D2 + D3)": 100,
+                "Vitamin E added": 1000,
+                "Niacin addd (B3)": 35,
+                "Vitamin B6": 100,
+                "Folic acid (B9)": 1000,
+                "Choline (g/d)": 3.5,
+                "Calcium": 2500,
+                "Copper": 10,
+                "Fluoride": 10000,
+                "Iodine": 1100,
+                "Iron": 45,
+                "Manganese": 11,
+                "Molybdenum": 2000,
+                "Phosphorus": 4000,
+                "Selenium": 400,
+                "Zinc": 40,
+                "Chloride": 3.6
+            },
+            "pregnant": {
+                "Retinol": 3000,
+                "Vitamin C (total ascorbic acid)": 2000,
+                "Vitamin D (D2 + D3)": 100,
+                "Vitamin E added": 1000,
+                "Niacin addd (B3)": 35,
+                "Vitamin B6": 100,
+                "Folic acid (B9)": 1000,
+                "Choline (g/d)": 3.5,
+                "Calcium": 2500,
+                "Copper": 10,
+                "Fluoride": 10000,
+                "Iodine": 1100,
+                "Iron": 45,
+                "Manganese": 11,
+                "Molybdenum": 2000,
+                "Phosphorus": 3500,
+                "Selenium": 400,
+                "Zinc": 40,
+                "Chloride": 3.6
+            },
+            "breastfeeding": {
+                "Retinol": 3000,
+                "Vitamin C (total ascorbic acid)": 2000,
+                "Vitamin D (D2 + D3)": 100,
+                "Vitamin E added": 1000,
+                "Niacin addd (B3)": 35,
+                "Vitamin B6": 100,
+                "Folic acid (B9)": 1000,
+                "Choline (g/d)": 3.5,
+                "Calcium": 2500,
+                "Copper": 10,
+                "Fluoride": 10000,
+                "Iodine": 1100,
+                "Iron": 45,
+                "Manganese": 11,
+                "Molybdenum": 2000,
+                "Phosphorus": 4000,
+                "Selenium": 400,
+                "Zinc": 40,
+                "Chloride": 3.6
+            }
+        }
+    },
+    "31.0": {
+        "male": {
+            "none": {
+                "Retinol": 3000,
+                "Vitamin C (total ascorbic acid)": 2000,
+                "Vitamin D (D2 + D3)": 100,
+                "Vitamin E added": 1000,
+                "Niacin addd (B3)": 35,
+                "Vitamin B6": 100,
+                "Folic acid (B9)": 1000,
+                "Choline (g/d)": 3.5,
+                "Calcium": 2500,
+                "Copper": 10,
+                "Fluoride": 10000,
+                "Iodine": 1100,
+                "Iron": 45,
+                "Manganese": 11,
+                "Molybdenum": 2000,
+                "Phosphorus": 4000,
+                "Selenium": 400,
+                "Zinc": 40,
+                "Chloride": 3.6
+            }
+        },
+        "female": {
+            "none": {
+                "Retinol": 3000,
+                "Vitamin C (total ascorbic acid)": 2000,
+                "Vitamin D (D2 + D3)": 100,
+                "Vitamin E added": 1000,
+                "Niacin addd (B3)": 35,
+                "Vitamin B6": 100,
+                "Folic acid (B9)": 1000,
+                "Choline (g/d)": 3.5,
+                "Calcium": 2500,
+                "Copper": 10,
+                "Fluoride": 10000,
+                "Iodine": 1100,
+                "Iron": 45,
+                "Manganese": 11,
+                "Molybdenum": 2000,
+                "Phosphorus": 4000,
+                "Selenium": 400,
+                "Zinc": 40,
+                "Chloride": 3.6
+            },
+            "pregnant": {
+                "Retinol": 3000,
+                "Vitamin C (total ascorbic acid)": 2000,
+                "Vitamin D (D2 + D3)": 100,
+                "Vitamin E added": 1000,
+                "Niacin addd (B3)": 35,
+                "Vitamin B6": 100,
+                "Folic acid (B9)": 1000,
+                "Choline (g/d)": 3.5,
+                "Calcium": 2500,
+                "Copper": 10,
+                "Fluoride": 10000,
+                "Iodine": 1100,
+                "Iron": 45,
+                "Manganese": 11,
+                "Molybdenum": 2000,
+                "Phosphorus": 3500,
+                "Selenium": 400,
+                "Zinc": 40,
+                "Chloride": 3.6
+            },
+            "breastfeeding": {
+                "Retinol": 3000,
+                "Vitamin C (total ascorbic acid)": 2000,
+                "Vitamin D (D2 + D3)": 100,
+                "Vitamin E added": 1000,
+                "Niacin addd (B3)": 35,
+                "Vitamin B6": 100,
+                "Folic acid (B9)": 1000,
+                "Choline (g/d)": 3.5,
+                "Calcium": 2500,
+                "Copper": 10,
+                "Fluoride": 10000,
+                "Iodine": 1100,
+                "Iron": 45,
+                "Manganese": 11,
+                "Molybdenum": 2000,
+                "Phosphorus": 4000,
+                "Selenium": 400,
+                "Zinc": 40,
+                "Chloride": 3.6
+            }
+        }
+    },
+    "51.0": {
+        "male": {
+            "none": {
+                "Retinol": 3000,
+                "Vitamin C (total ascorbic acid)": 2000,
+                "Vitamin D (D2 + D3)": 100,
+                "Vitamin E added": 1000,
+                "Niacin addd (B3)": 35,
+                "Vitamin B6": 100,
+                "Folic acid (B9)": 1000,
+                "Choline (g/d)": 3.5,
+                "Calcium": 2000,
+                "Copper": 10,
+                "Fluoride": 10000,
+                "Iodine": 1100,
+                "Iron": 45,
+                "Manganese": 11,
+                "Molybdenum": 2000,
+                "Phosphorus": 4000,
+                "Selenium": 400,
+                "Zinc": 40,
+                "Chloride": 3.6
+            }
+        },
+        "female": {
+            "none": {
+                "Retinol": 3000,
+                "Vitamin C (total ascorbic acid)": 2000,
+                "Vitamin D (D2 + D3)": 100,
+                "Vitamin E added": 1000,
+                "Niacin addd (B3)": 35,
+                "Vitamin B6": 100,
+                "Folic acid (B9)": 1000,
+                "Choline (g/d)": 3.5,
+                "Calcium": 2000,
+                "Copper": 10,
+                "Fluoride": 10000,
+                "Iodine": 1100,
+                "Iron": 45,
+                "Manganese": 11,
+                "Molybdenum": 2000,
+                "Phosphorus": 4000,
+                "Selenium": 400,
+                "Zinc": 40,
+                "Chloride": 3.6
+            }
+        }
+    },
+    "70.0": {
+        "male": {
+            "none": {
+                "Retinol": 3000,
+                "Vitamin C (total ascorbic acid)": 2000,
+                "Vitamin D (D2 + D3)": 100,
+                "Vitamin E added": 1000,
+                "Niacin addd (B3)": 35,
+                "Vitamin B6": 100,
+                "Folic acid (B9)": 1000,
+                "Choline (g/d)": 3.5,
+                "Calcium": 2000,
+                "Copper": 10,
+                "Fluoride": 10000,
+                "Iodine": 1100,
+                "Iron": 45,
+                "Manganese": 11,
+                "Molybdenum": 2000,
+                "Phosphorus": 3000,
+                "Selenium": 400,
+                "Zinc": 40,
+                "Chloride": 3.6
+            }
+        },
+        "female": {
+            "none": {
+                "Retinol": 3000,
+                "Vitamin C (total ascorbic acid)": 2000,
+                "Vitamin D (D2 + D3)": 100,
+                "Vitamin E added": 1000,
+                "Niacin addd (B3)": 35,
+                "Vitamin B6": 100,
+                "Folic acid (B9)": 1000,
+                "Choline (g/d)": 3.5,
+                "Calcium": 2000,
+                "Copper": 10,
+                "Fluoride": 10000,
+                "Iodine": 1100,
+                "Iron": 45,
+                "Manganese": 11,
+                "Molybdenum": 2000,
+                "Phosphorus": 3000,
+                "Selenium": 400,
+                "Zinc": 40,
+                "Chloride": 3.6
+            }
+        }
+    }
+}

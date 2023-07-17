@@ -1,0 +1,318 @@
+{
+    "0.0": {
+        "none": {
+            "none": {
+                "Total Protein": 1.52,
+                "Histidine": 0.036,
+                "Isoleucine": 0.088,
+                "Leucine": 0.156,
+                "Lysine": 0.107,
+                "Methionine + Cysteine": 0.059,
+                "Phenylalanine + Tyrosine": 0.135,
+                "Threonine": 0.073,
+                "Tryptophan": 0.028,
+                "Valine": 0.087
+            }
+        }
+    },
+    "0.5": {
+        "none": {
+            "none": {
+                "Total Protein": 1.2,
+                "Histidine": 0.032,
+                "Isoleucine": 0.043,
+                "Leucine": 0.093,
+                "Lysine": 0.089,
+                "Methionine + Cysteine": 0.043,
+                "Phenylalanine + Tyrosine": 0.084,
+                "Threonine": 0.049,
+                "Tryptophan": 0.013,
+                "Valine": 0.058
+            }
+        }
+    },
+    "1.0": {
+        "none": {
+            "none": {
+                "Total Protein": 1.05,
+                "Histidine": 0.021,
+                "Isoleucine": 0.028,
+                "Leucine": 0.063,
+                "Lysine": 0.058,
+                "Methionine + Cysteine": 0.028,
+                "Phenylalanine + Tyrosine": 0.054,
+                "Threonine": 0.032,
+                "Tryptophan": 0.008,
+                "Valine": 0.037
+            }
+        }
+    },
+    "4.0": {
+        "none": {
+            "none": {
+                "Total Protein": 0.95,
+                "Histidine": 0.016,
+                "Isoleucine": 0.022,
+                "Leucine": 0.049,
+                "Lysine": 0.046,
+                "Methionine + Cysteine": 0.022,
+                "Phenylalanine + Tyrosine": 0.041,
+                "Threonine": 0.024,
+                "Tryptophan": 0.006,
+                "Valine": 0.028
+            }
+        }
+    },
+    "9.0": {
+        "male": {
+            "none": {
+                "Total Protein": 0.95,
+                "Histidine": 0.017,
+                "Isoleucine": 0.022,
+                "Leucine": 0.049,
+                "Lysine": 0.046,
+                "Methionine + Cysteine": 0.022,
+                "Phenylalanine + Tyrosine": 0.041,
+                "Threonine": 0.024,
+                "Tryptophan": 0.006,
+                "Valine": 0.028
+            }
+        },
+        "female": {
+            "none": {
+                "Total Protein": 0.95,
+                "Histidine": 0.015,
+                "Isoleucine": 0.021,
+                "Leucine": 0.047,
+                "Lysine": 0.043,
+                "Methionine + Cysteine": 0.021,
+                "Phenylalanine + Tyrosine": 0.038,
+                "Threonine": 0.022,
+                "Tryptophan": 0.005,
+                "Valine": 0.027
+            }
+        }
+    },
+    "14.0": {
+        "male": {
+            "none": {
+                "Total Protein": 0.85,
+                "Histidine": 0.015,
+                "Isoleucine": 0.021,
+                "Leucine": 0.047,
+                "Lysine": 0.043,
+                "Methionine + Cysteine": 0.021,
+                "Phenylalanine + Tyrosine": 0.038,
+                "Threonine": 0.022,
+                "Tryptophan": 0.005,
+                "Valine": 0.027
+            }
+        },
+        "female": {
+            "none": {
+                "Total Protein": 0.85,
+                "Histidine": 0.014,
+                "Isoleucine": 0.019,
+                "Leucine": 0.044,
+                "Lysine": 0.04,
+                "Methionine + Cysteine": 0.019,
+                "Phenylalanine + Tyrosine": 0.035,
+                "Threonine": 0.021,
+                "Tryptophan": 0.005,
+                "Valine": 0.024
+            },
+            "pregnant": {
+                "Total Protein": 1.1,
+                "Histidine": 0.018,
+                "Isoleucine": 0.025,
+                "Leucine": 0.056,
+                "Lysine": 0.051,
+                "Methionine + Cysteine": 0.025,
+                "Phenylalanine + Tyrosine": 0.044,
+                "Threonine": 0.026,
+                "Tryptophan": 0.007,
+                "Valine": 0.031
+            },
+            "breastfeeding": {
+                "Total Protein": 1.3,
+                "Histidine": 0.015,
+                "Isoleucine": 0.024,
+                "Leucine": 0.05,
+                "Lysine": 0.042,
+                "Methionine + Cysteine": 0.021,
+                "Phenylalanine + Tyrosine": 0.041,
+                "Threonine": 0.024,
+                "Tryptophan": 0.007,
+                "Valine": 0.028
+            }
+        }
+    },
+    "19.0": {
+        "male": {
+            "none": {
+                "Total Protein": 0.8,
+                "Histidine": 0.011,
+                "Isoleucine": 0.015,
+                "Leucine": 0.034,
+                "Lysine": 0.031,
+                "Methionine + Cysteine": 0.015,
+                "Phenylalanine + Tyrosine": 0.027,
+                "Threonine": 0.016,
+                "Tryptophan": 0.004,
+                "Valine": 0.019
+            }
+        },
+        "female": {
+            "none": {
+                "Total Protein": 0.8,
+                "Histidine": 0.011,
+                "Isoleucine": 0.015,
+                "Leucine": 0.034,
+                "Lysine": 0.031,
+                "Methionine + Cysteine": 0.015,
+                "Phenylalanine + Tyrosine": 0.027,
+                "Threonine": 0.016,
+                "Tryptophan": 0.004,
+                "Valine": 0.019
+            },
+            "pregnant": {
+                "Total Protein": 1.1,
+                "Histidine": 0.018,
+                "Isoleucine": 0.025,
+                "Leucine": 0.056,
+                "Lysine": 0.051,
+                "Methionine + Cysteine": 0.025,
+                "Phenylalanine + Tyrosine": 0.044,
+                "Threonine": 0.026,
+                "Tryptophan": 0.007,
+                "Valine": 0.031
+            },
+            "breastfeeding": {
+                "Total Protein": 1.3,
+                "Histidine": 0.015,
+                "Isoleucine": 0.024,
+                "Leucine": 0.05,
+                "Lysine": 0.042,
+                "Methionine + Cysteine": 0.021,
+                "Phenylalanine + Tyrosine": 0.041,
+                "Threonine": 0.024,
+                "Tryptophan": 0.007,
+                "Valine": 0.028
+            }
+        }
+    },
+    "31.0": {
+        "male": {
+            "none": {
+                "Total Protein": 0.8,
+                "Histidine": 0.011,
+                "Isoleucine": 0.015,
+                "Leucine": 0.034,
+                "Lysine": 0.031,
+                "Methionine + Cysteine": 0.015,
+                "Phenylalanine + Tyrosine": 0.027,
+                "Threonine": 0.016,
+                "Tryptophan": 0.004,
+                "Valine": 0.019
+            }
+        },
+        "female": {
+            "none": {
+                "Total Protein": 0.8,
+                "Histidine": 0.011,
+                "Isoleucine": 0.015,
+                "Leucine": 0.034,
+                "Lysine": 0.031,
+                "Methionine + Cysteine": 0.015,
+                "Phenylalanine + Tyrosine": 0.027,
+                "Threonine": 0.016,
+                "Tryptophan": 0.004,
+                "Valine": 0.019
+            },
+            "pregnant": {
+                "Total Protein": 1.1,
+                "Histidine": 0.018,
+                "Isoleucine": 0.025,
+                "Leucine": 0.056,
+                "Lysine": 0.051,
+                "Methionine + Cysteine": 0.025,
+                "Phenylalanine + Tyrosine": 0.044,
+                "Threonine": 0.026,
+                "Tryptophan": 0.007,
+                "Valine": 0.031
+            },
+            "breastfeeding": {
+                "Total Protein": 1.3,
+                "Histidine": 0.015,
+                "Isoleucine": 0.024,
+                "Leucine": 0.05,
+                "Lysine": 0.042,
+                "Methionine + Cysteine": 0.021,
+                "Phenylalanine + Tyrosine": 0.041,
+                "Threonine": 0.024,
+                "Tryptophan": 0.007,
+                "Valine": 0.028
+            }
+        }
+    },
+    "51.0": {
+        "male": {
+            "none": {
+                "Total Protein": 0.8,
+                "Histidine": 0.011,
+                "Isoleucine": 0.015,
+                "Leucine": 0.034,
+                "Lysine": 0.031,
+                "Methionine + Cysteine": 0.015,
+                "Phenylalanine + Tyrosine": 0.027,
+                "Threonine": 0.016,
+                "Tryptophan": 0.004,
+                "Valine": 0.019
+            }
+        },
+        "female": {
+            "none": {
+                "Total Protein": 0.8,
+                "Histidine": 0.011,
+                "Isoleucine": 0.015,
+                "Leucine": 0.034,
+                "Lysine": 0.031,
+                "Methionine + Cysteine": 0.015,
+                "Phenylalanine + Tyrosine": 0.027,
+                "Threonine": 0.016,
+                "Tryptophan": 0.004,
+                "Valine": 0.019
+            }
+        }
+    },
+    "70.0": {
+        "male": {
+            "none": {
+                "Total Protein": 0.8,
+                "Histidine": 0.011,
+                "Isoleucine": 0.015,
+                "Leucine": 0.034,
+                "Lysine": 0.031,
+                "Methionine + Cysteine": 0.015,
+                "Phenylalanine + Tyrosine": 0.027,
+                "Threonine": 0.016,
+                "Tryptophan": 0.004,
+                "Valine": 0.019
+            }
+        },
+        "female": {
+            "none": {
+                "Total Protein": 0.8,
+                "Histidine": 0.011,
+                "Isoleucine": 0.015,
+                "Leucine": 0.034,
+                "Lysine": 0.031,
+                "Methionine + Cysteine": 0.015,
+                "Phenylalanine + Tyrosine": 0.027,
+                "Threonine": 0.016,
+                "Tryptophan": 0.004,
+                "Valine": 0.019
+            }
+        }
+    }
+}
