@@ -38,11 +38,13 @@ Zinc,309,MG,1095
 Potassium,306,MG,1092
 Sodium,307,MG,1093
 Chloride,9999,G,9999
-Linoleic acid,618,G,1269
-α-Linolenic Acid (ALA),619,G,1270
-docosahexaenoic acid (DHA),621,G,1272
-Eicosapentaenoic acid (EPA),629,G,1278
-Docosapentaenoic acid (DPA),631,G,1280
+n-6 linoleic acid,618,G,1269
+n-6 stearidonic acid,627,G,1276
+n-6 arachidonic acid,620,G,1271
+n-3 a-linolenic Acid (ALA),619,G,1270
+n-3 docosahexaenoic acid (DHA),621,G,1272
+n-3 eicosapentaenoic acid (EPA),629,G,1278
+n-3 docosapentaenoic acid (DPA),631,G,1280
 Cholesterol,601,MG,1253
 Trans fatty acids,605,G,1257
 Saturated fatty acids,606,G,1258

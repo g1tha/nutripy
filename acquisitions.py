@@ -9,7 +9,9 @@ import json
 
 
 def main():
-    ...
+    extract_us_energy_dist()
+    extract_us_nutrient_reqs()
+
 
 def download_fda_nutrients():
     if not os.path.exists("data/sources"):
@@ -23,17 +25,120 @@ def download_fda_nutrients():
     os.remove("data/sources/FoodData_Central_survey_food_csv.zip")
 
 
-def read_dri_html():
+def extract_us_nutrient_reqs():
+    """
+    Function to download recommended dietary allowances and tolerable upper limits for nutrients issued by the US Food and Nutrition Board.
+    Link: https://ods.od.nih.gov/HealthInformation/nutrientrecommendations.aspx.
+    """
+
+    # helper function to extract and format table from html
+    def parse_html(url):
+        categories = pd.DataFrame(
+            {
+                "min_age": [
+                    0,
+                    0.5,
+                    1,
+                    4,
+                    9,
+                    14,
+                    19,
+                    31,
+                    51,
+                    70,
+                    9,
+                    14,
+                    19,
+                    31,
+                    51,
+                    70,
+                    14,
+                    19,
+                    31,
+                    14,
+                    19,
+                    31,
+                ],
+                "sex": [
+                    "none",
+                    "none",
+                    "none",
+                    "none",
+                    "male",
+                    "male",
+                    "male",
+                    "male",
+                    "male",
+                    "male",
+                    "female",
+                    "female",
+                    "female",
+                    "female",
+                    "female",
+                    "female",
+                    "female",
+                    "female",
+                    "female",
+                    "female",
+                    "female",
+                    "female",
+                ],
+                "maternity": [
+                    "none",
+                    "none",
+                    "none",
+                    "none",
+                    "none",
+                    "none",
+                    "none",
+                    "none",
+                    "none",
+                    "none",
+                    "none",
+                    "none",
+                    "none",
+                    "none",
+                    "none",
+                    "none",
+                    "pregnant",
+                    "pregnant",
+                    "pregnant",
+                    "breastfeeding",
+                    "breastfeeding",
+                    "breastfeeding",
+                ],
+            }
+        )
+
+        drop_rowlist = [
+            "Infants",
+            "Children",
+            "Males",
+            "Females",
+            "Pregnancy",
+            "Lactation",
+        ]
+        df = (
+            pd.read_html(requests.get(url).content, index_col=0)[0]
+            .drop(drop_rowlist)
+            .replace("[^0-9.]", "", regex=True)
+        )
+        df = categories.join(df.reset_index(drop=True)).set_index(
+            ["min_age", "sex", "maternity"]
+        )
+        return df
+
+    # Create data folder if it does not exist
     if not os.path.exists("data"):
         os.makedirs("data")
     # Load standardised nutrient names
     with open("data/nutrient_names_US.json") as f:
         nutrient_names_US = json.load(f)
     # read rdas for minerals, vitamins and macros
-    minerals_rda = parse_dri_html(
+    minerals_rda = parse_html(
         "https://www.ncbi.nlm.nih.gov/books/NBK545442/table/appJ_tab3/?report=objectonly"
     )
-    vitamins_rda = parse_dri_html(
+    vitamins_rda = parse_html(
         "https://www.ncbi.nlm.nih.gov/books/NBK56068/table/summarytables.t2/?report=objectonly"
     )
     # Remove extra characters
@@ -48,7 +153,7 @@ def read_dri_html():
             "Choline (mg/d)g": "Choline (mg/d)",
         },
     )
-    macros_rda = parse_dri_html(
+    macros_rda = parse_html(
         "https://www.ncbi.nlm.nih.gov/books/NBK56068/table/summarytables.t4/?report=objectonly"
     )
     # Remove extra characters
@@ -64,13 +169,13 @@ def read_dri_html():
     # Rename all columns to standardised names from nutrient_names_US.json
     rda.rename(columns=nutrient_names_US, inplace=True)
     # Convert units: [copper: {UG: MG}, fluoride: {MG: UG}]
-    rda['Copper'] = pd.to_numeric(rda['Copper']).div(1000).fillna(0)
-    rda['Fluoride'] = pd.to_numeric(rda['Fluoride']).mul(1000).fillna(0)
+    rda["Copper"] = pd.to_numeric(rda["Copper"]).div(1000).fillna(0)
+    rda["Fluoride"] = pd.to_numeric(rda["Fluoride"]).mul(1000).fillna(0)
     # Export rdas to a csv.
-    rda.replace('',0).to_csv('data/rda.csv', encoding='utf-8-sig')
+    rda.replace("", 0).to_csv("data/rda.csv", encoding="utf-8-sig")
 
     # Read total upper limits for vitamins and minerals
-    minerals_tul = parse_dri_html(
+    minerals_tul = parse_html(
         "https://www.ncbi.nlm.nih.gov/books/NBK545442/table/appJ_tab9/?report=objectonly"
     )
     # Delete columns with undetermined values, and columns where there are no rdas as well as no data tracked for food.
@@ -86,7 +191,7 @@ def read_dri_html():
             "Sulfate",
             "Vanadium (mg/d)d",
             "Sodiume",
-            "Magnesium (mg/d)b"
+            "Magnesium (mg/d)b",
         },
     )
     # Remove extra characters and change units
@@ -96,7 +201,7 @@ def read_dri_html():
             "Phosphorus (g/d)": "Phosphorus (mg/d)",
         },
     )
-    vitamins_tul = parse_dri_html(
+    vitamins_tul = parse_html(
         "https://www.ncbi.nlm.nih.gov/books/NBK56068/table/summarytables.t7/?report=objectonly"
     )
     # Delete columns with undetermined values.
@@ -127,22 +232,13 @@ def read_dri_html():
     # Rename all columns to standardised names from nutrient_names_US.json
     tul.rename(columns=nutrient_names_US, inplace=True)
     # Convert units: [copper: {UG: MG}, fluoride: {MG: UG}, Phosphorus: {G: MG}]
-    tul['Copper'] = pd.to_numeric(tul['Copper']).div(1000).fillna(0)
-    tul['Fluoride'] = pd.to_numeric(tul['Fluoride']).mul(1000).fillna(0)
-    tul['Phosphorus'] = pd.to_numeric(tul['Phosphorus']).mul(1000).fillna(0)
-    # Export tuls to a csv.
-    tul.replace('',0).to_csv('data/tul.csv', encoding='utf-8-sig')
-
-    # energy_distribution = pd.read_html(
-    #     requests.get(
-    #         "https://www.ncbi.nlm.nih.gov/books/NBK56068/table/summarytables.t5/?report=objectonly"
-    #     ).content
-    # )[0]
-    # print(energy_distribution)
-
-
-def parse_dri_html(url):
-    categories = pd.DataFrame(
+    tul["Copper"] = pd.to_numeric(tul["Copper"]).div(1000).fillna(0)
+    tul["Fluoride"] = pd.to_numeric(tul["Fluoride"]).mul(1000).fillna(0)
+    tul["Phosphorus"] = pd.to_numeric(tul["Phosphorus"]).mul(1000).fillna(0)
+    # Add Sodium limits from Appendix J, of 
+    # Dietary Reference Intakes for Sodium and Potassium (2019), 
+    # https://www.ncbi.nlm.nih.gov/books/NBK538102/pdf/Bookshelf_NBK538102.pdf.
+    sodium = pd.DataFrame(
         {
             "min_age": [
                 0,
@@ -155,81 +251,90 @@ def parse_dri_html(url):
                 31,
                 51,
                 70,
-                9,
-                14,
-                19,
-                31,
-                51,
-                70,
-                14,
-                19,
-                31,
-                14,
-                19,
-                31,
             ],
-            "gender": [
-                "none",
-                "none",
-                "none",
-                "none",
-                "male",
-                "male",
-                "male",
-                "male",
-                "male",
-                "male",
-                "female",
-                "female",
-                "female",
-                "female",
-                "female",
-                "female",
-                "female",
-                "female",
-                "female",
-                "female",
-                "female",
-                "female",
-            ],
-            "maternity": [
-                "none",
-                "none",
-                "none",
-                "none",
-                "none",
-                "none",
-                "none",
-                "none",
-                "none",
-                "none",
-                "none",
-                "none",
-                "none",
-                "none",
-                "none",
-                "none",
-                "pregnant",
-                "pregnant",
-                "pregnant",
-                "breastfeeding",
-                "breastfeeding",
-                "breastfeeding",
+            "Sodium": [
+                "",
+                "",
+                1200,
+                1500,
+                1800,
+                2300,
+                2300,
+                2300,
+                2300,
+                2300,
             ],
         }
     )
-
-    drop_rowlist = ["Infants", "Children", "Males", "Females", "Pregnancy", "Lactation"]
-    df = (
-        pd.read_html(requests.get(url).content, index_col=0)[0]
-        .drop(drop_rowlist)
-        .replace("[^0-9.]", "", regex=True)
+    tul = (
+        tul.reset_index()
+        .merge(sodium, on="min_age", how="left")
+        .set_index(["min_age", "sex", "maternity"])
     )
-    df = categories.join(df.reset_index(drop=True)).set_index(
-        ["min_age", "gender", "maternity"]
-    )
-    return df
+    # Export tuls to a csv.
+    tul.to_csv("data/tul.csv", encoding="utf-8-sig")
 
+
+def extract_us_energy_dist():
+    """
+    Function creates CSV files for lower and upper ranges for energy distribution between fats, carbohydrates and proteins in percentages.
+    """
+    # Add data folder if it does not exist
+    if not os.path.exists("data"):
+        os.makedirs("data")
+    # Create an index column to later merge with the table read from the html page
+    index_col = pd.DataFrame(
+        {
+            "min_age": [
+                0,
+                1,
+                4,
+                19,
+            ]
+        }
+    )
+    # Get energy distribution table from html page
+    energy_distribution = (
+        pd.read_html(
+            requests.get(
+                "https://www.ncbi.nlm.nih.gov/books/NBK56068/table/summarytables.t5/?report=objectonly"
+            ).content
+        )[0]
+        .transpose()
+        .reset_index(drop=True)
+    )
+    # Set 1st row as headers
+    energy_distribution.columns = energy_distribution.iloc[0]
+    energy_distribution = energy_distribution[1:]
+    # Add index column for min_age
+    energy_distribution = index_col.join(energy_distribution).set_index("min_age")
+    # remove blank column
+    energy_distribution = energy_distribution[1:]
+    # Rename nutrients to standardised names
+    energy_distribution.rename(
+        inplace=True,
+        columns={
+            "Fat": "Total Fat",
+            "n-6 polyunsaturated fatty acidsa (linoleic acid)": "Linoleic acid",
+            "n-3 polyunsaturated fatty acidsa (α-linolenic acid)": "α-Linolenic Acid (ALA)",
+            "Carbohydrate": "Total Carbohydrates",
+            "Protein": "Total Protein",
+        },
+    )
+
+    # Add sugars of 0-25% based on added sugars for all sugars
+    energy_distribution['Total Sugars'] = '0–25'
+    # Add Long-chain Poly-Unsaturated Fat (LC-PUFAs) requirement of 10% of n-3 and n-6 fatty acids
+    energy_distribution['LC-PUFAs'] = '0.56–1.12'
+    # Function to extract part of each string to left (n = 0), or right (n = 1) of '-'.
+    def extract_part(s, n):
+        return s.split("–")[n]
+
+    # Export lower and upper ranges to CSVs
+    energy_dist_lower = energy_distribution.applymap(extract_part, n=0)
+    energy_dist_lower.to_csv("data/energy_dist_lower.csv", encoding="utf-8-sig")
+    energy_dist_upper = energy_distribution.applymap(extract_part, n=1)
+    energy_dist_upper.to_csv("data/energy_dist_upper.csv", encoding="utf-8-sig")
 
 
 if __name__ == "__main__":

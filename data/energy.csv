@@ -1,4 +1,4 @@
-min_age,gender,maternity,stage,PAL,min_BMI,constant,age_param,height_param,weight_param,growth_cost,gestation_param,energy_deposition,milk_production,energy_mobilization
+min_age,sex,maternity,stage,PAL,min_BMI,constant,age_param,height_param,weight_param,growth_cost,gestation_param,energy_deposition,milk_production,energy_mobilization
 0,male,none,none,none,none,-716.45,-1,17.82,15.06,200,0,0,0,0
 0.25,male,none,none,none,none,-716.45,-1,17.82,15.06,50,0,0,0,0
 0.5,male,none,none,none,none,-716.45,-1,17.82,15.06,20,0,0,0,0

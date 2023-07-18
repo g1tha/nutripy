@@ -1,4 +1,4 @@
-min_age,gender,maternity,Total Protein,Histidine,Isoleucine,Leucine,Lysine,Methionine + Cysteine,Phenylalanine + Tyrosine,Threonine,Tryptophan,Valine
+min_age,sex,maternity,Total Protein,Histidine,Isoleucine,Leucine,Lysine,Methionine + Cysteine,Phenylalanine + Tyrosine,Threonine,Tryptophan,Valine
 0,none,none,1.52,0.036,0.088,0.156,0.107,0.059,0.135,0.073,0.028,0.087
 0.5,none,none,1.2,0.032,0.043,0.093,0.089,0.043,0.084,0.049,0.013,0.058
 1,none,none,1.05,0.021,0.028,0.063,0.058,0.028,0.054,0.032,0.008,0.037
