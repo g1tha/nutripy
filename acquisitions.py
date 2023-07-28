@@ -172,11 +172,15 @@ def extract_us_nutrient_reqs():
     rda["Copper"] = pd.to_numeric(rda["Copper"]).div(1000).fillna(0)
     rda["Fluoride"] = pd.to_numeric(rda["Fluoride"]).mul(1000).fillna(0)
     # Duplicate where 'sex' is 'none' to 'male' and 'female'.
-    # rda_none = rda.loc[pd.IndexSlice[:,'none'], :]
-    # idx = rda_none.index
-    # print(idx.set_levels(['male'], level='sex'))
+    rda_none = rda.loc[pd.IndexSlice[:,'none'], :]
+    rda_male = rda_none.copy()
+    rda_male.index = rda_male.index.set_levels(['1', '2', 'male'], level='sex')
+    rda_female = rda_none.copy()
+    rda_female.index = rda_female.index.set_levels(['1', '2', 'female'], level='sex')
+    rda_not_none = rda.loc[pd.IndexSlice[:,['male', 'female']], :]
+    rda_new = pd.concat([rda_not_none, rda_male, rda_female])
     # Export rdas to a csv.
-    # rda.replace("", 0).to_csv("data/rda.csv")
+    rda_new.replace("", 0).to_csv("data/rda.csv")
 
     # Read total upper limits for vitamins and minerals
     minerals_tul = parse_html(
@@ -275,8 +279,16 @@ def extract_us_nutrient_reqs():
         .merge(sodium, on="min_age", how="left")
         .set_index(["min_age", "sex", "maternity"])
     )
+    # Duplicate where 'sex' is 'none' to 'male' and 'female'.
+    tul_none = tul.loc[pd.IndexSlice[:,'none'], :]
+    tul_male = tul_none.copy()
+    tul_male.index = tul_male.index.set_levels(['1', '2', 'male'], level='sex')
+    tul_female = tul_none.copy()
+    tul_female.index = tul_female.index.set_levels(['1', '2', 'female'], level='sex')
+    tul_not_none = tul.loc[pd.IndexSlice[:,['male', 'female']], :]
+    tul_new = pd.concat([tul_not_none, tul_male, tul_female])
     # Export tuls to a csv.
-    # tul.to_csv("data/tul.csv")
+    tul_new.to_csv("data/tul.csv")
 
 
 def extract_us_energy_dist():
