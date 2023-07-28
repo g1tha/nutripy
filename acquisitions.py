@@ -9,7 +9,7 @@ import json
 
 
 def main():
-    extract_us_energy_dist()
+    # extract_us_energy_dist()
     extract_us_nutrient_reqs()
 
 
@@ -36,28 +36,28 @@ def extract_us_nutrient_reqs():
         categories = pd.DataFrame(
             {
                 "min_age": [
-                    0,
-                    0.5,
-                    1,
-                    4,
-                    9,
-                    14,
-                    19,
-                    31,
-                    51,
-                    70,
-                    9,
-                    14,
-                    19,
-                    31,
-                    51,
-                    70,
-                    14,
-                    19,
-                    31,
-                    14,
-                    19,
-                    31,
+                    "0",
+                    "0.5",
+                    "1",
+                    "4",
+                    "9",
+                    "14",
+                    "19",
+                    "31",
+                    "51",
+                    "70",
+                    "9",
+                    "14",
+                    "19",
+                    "31",
+                    "51",
+                    "70",
+                    "14",
+                    "19",
+                    "31",
+                    "14",
+                    "19",
+                    "31",
                 ],
                 "sex": [
                     "none",
@@ -171,8 +171,12 @@ def extract_us_nutrient_reqs():
     # Convert units: [copper: {UG: MG}, fluoride: {MG: UG}]
     rda["Copper"] = pd.to_numeric(rda["Copper"]).div(1000).fillna(0)
     rda["Fluoride"] = pd.to_numeric(rda["Fluoride"]).mul(1000).fillna(0)
+    # Duplicate where 'sex' is 'none' to 'male' and 'female'.
+    # rda_none = rda.loc[pd.IndexSlice[:,'none'], :]
+    # idx = rda_none.index
+    # print(idx.set_levels(['male'], level='sex'))
     # Export rdas to a csv.
-    rda.replace("", 0).to_csv("data/rda.csv", encoding="utf-8-sig")
+    # rda.replace("", 0).to_csv("data/rda.csv")
 
     # Read total upper limits for vitamins and minerals
     minerals_tul = parse_html(
@@ -241,16 +245,16 @@ def extract_us_nutrient_reqs():
     sodium = pd.DataFrame(
         {
             "min_age": [
-                0,
-                0.5,
-                1,
-                4,
-                9,
-                14,
-                19,
-                31,
-                51,
-                70,
+                "0",
+                "0.5",
+                "1",
+                "4",
+                "9",
+                "14",
+                "19",
+                "31",
+                "51",
+                "70",
             ],
             "Sodium": [
                 "",
@@ -272,7 +276,7 @@ def extract_us_nutrient_reqs():
         .set_index(["min_age", "sex", "maternity"])
     )
     # Export tuls to a csv.
-    tul.to_csv("data/tul.csv", encoding="utf-8-sig")
+    # tul.to_csv("data/tul.csv")
 
 
 def extract_us_energy_dist():
@@ -286,10 +290,10 @@ def extract_us_energy_dist():
     index_col = pd.DataFrame(
         {
             "min_age": [
-                0,
-                1,
-                4,
-                19,
+                "0",
+                "1",
+                "4",
+                "19",
             ]
         }
     )
@@ -315,8 +319,8 @@ def extract_us_energy_dist():
         inplace=True,
         columns={
             "Fat": "Total Fat",
-            "n-6 polyunsaturated fatty acidsa (linoleic acid)": "Linoleic acid",
-            "n-3 polyunsaturated fatty acidsa (α-linolenic acid)": "α-Linolenic Acid (ALA)",
+            "n-6 polyunsaturated fatty acidsa (linoleic acid)": "n-6 linoleic acid",
+            "n-3 polyunsaturated fatty acidsa (α-linolenic acid)": "n-3 a-linolenic Acid (ALA)",
             "Carbohydrate": "Total Carbohydrates",
             "Protein": "Total Protein",
         },
@@ -332,9 +336,9 @@ def extract_us_energy_dist():
 
     # Export lower and upper ranges to CSVs
     energy_dist_lower = energy_distribution.applymap(extract_part, n=0)
-    energy_dist_lower.to_csv("data/energy_dist_lower.csv", encoding="utf-8-sig")
+    energy_dist_lower.to_csv("data/energy_dist_lower.csv")
     energy_dist_upper = energy_distribution.applymap(extract_part, n=1)
-    energy_dist_upper.to_csv("data/energy_dist_upper.csv", encoding="utf-8-sig")
+    energy_dist_upper.to_csv("data/energy_dist_upper.csv")
 
 
 if __name__ == "__main__":

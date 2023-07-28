@@ -44,6 +44,18 @@ class Person:
         else:
             return f"{self.name}, {self.sex}, aged {self.age_rounded}."
 
+    def float_to_str(self, n):
+        if n.is_integer():
+            return str(int(n))
+        else:
+            return str(n)
+
+    def str_to_float(self, s):
+        try:
+            return float(s)
+        except (ValueError, TypeError):
+            return 0
+
     @property
     def name(self):
         return self._name
@@ -215,22 +227,14 @@ class Person:
 
     @property
     def kcal(self):
-        def str_to_float(s):
-            s = s.replace(",", "")
-            try:
-                return float(s)
-            except:
-                return s
-
-        def float_to_str(n):
-            if n.is_integer():
-                return str(int(n))
-            else:
-                return str(n)
-            
         dct = {}
         min_ages = []
         min_BMIs = []
+        with open("data/energy.csv") as csvfile:
+            data_headers = list(csv.reader(csvfile))[0]
+            remove_headers = ["min_age", "sex", "maternity", "stage", "PAL", "min_BMI"]
+            for i in remove_headers:
+                data_headers.remove(i)
         with open("data/energy.csv") as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
@@ -265,23 +269,13 @@ class Person:
                     ][row["min_BMI"]] = {}
                 dct[row["min_age"]][row["sex"]][row["maternity"]][row["stage"]][
                     row["PAL"]
-                ][row["min_BMI"]] = {
-                    "constant": str_to_float(row["constant"]),
-                    "age_param": str_to_float(row["age_param"]),
-                    "height_param": str_to_float(row["height_param"]),
-                    "weight_param": str_to_float(row["weight_param"]),
-                    "growth_cost": str_to_float(row["growth_cost"]),
-                    "gestation_param": str_to_float(row["gestation_param"]),
-                    "energy_deposition": str_to_float(row["energy_deposition"]),
-                    "milk_production": str_to_float(row["milk_production"]),
-                    "energy_mobilization": str_to_float(row["energy_mobilization"]),
-                }
-                if float(row["min_age"]) not in min_ages:
-                    min_ages.append(float(row["min_age"]))
+                ][row["min_BMI"]] = {i: self.str_to_float(row[i]) for i in data_headers}
+                if self.str_to_float(row["min_age"]) not in min_ages:
+                    min_ages.append(self.str_to_float(row["min_age"]))
                 if row["min_BMI"] != "none":
-                    if float(row["min_BMI"]) not in min_BMIs:
-                        min_BMIs.append(float(row["min_BMI"]))
-        min_age = float_to_str(max(age for age in min_ages if age < self.age))
+                    if self.str_to_float(row["min_BMI"]) not in min_BMIs:
+                        min_BMIs.append(self.str_to_float(row["min_BMI"]))
+        min_age = self.float_to_str(max(age for age in min_ages if age < self.age))
         sex = self.sex
         if self.due_date:
             maternity = "pregnant"
@@ -340,6 +334,112 @@ class Person:
             + energy_mobilization
         )
         return kcal
+
+    @property
+    def rda(self):
+        dct = {}
+        min_ages = []
+        with open("data/rda.csv") as csvfile:
+            data_headers = list(csv.reader(csvfile))[0]
+            remove_headers = ["min_age", "sex", "maternity"]
+            for i in remove_headers:
+                data_headers.remove(i)
+        with open("data/rda.csv") as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                if row["min_age"] not in dct:
+                    dct[row["min_age"]] = {}
+                if row["sex"] not in dct[row["min_age"]]:
+                    dct[row["min_age"]][row["sex"]] = {}
+                if row["maternity"] not in dct[row["min_age"]][row["sex"]]:
+                    dct[row["min_age"]][row["sex"]][row["maternity"]] = {}
+                dct[row["min_age"]][row["sex"]][row["maternity"]] = {
+                    i: self.str_to_float(row[i]) for i in data_headers
+                }
+                if self.str_to_float(row["min_age"]) not in min_ages:
+                    min_ages.append(self.str_to_float(row["min_age"]))
+        min_age = self.float_to_str(max(age for age in min_ages if age < self.age))
+        sex = self.sex
+        if self.due_date:
+            maternity = "pregnant"
+        elif self.breastfeeding:
+            maternity = "breastfeeding"
+        else:
+            maternity = "none"
+        rda = dct[min_age][sex][maternity]
+        return rda
+
+    @property
+    def tul(self):
+        dct = {}
+        min_ages = []
+        with open("data/tul.csv") as csvfile:
+            data_headers = list(csv.reader(csvfile))[0]
+            remove_headers = ["min_age", "sex", "maternity"]
+            for i in remove_headers:
+                data_headers.remove(i)
+        with open("data/tul.csv") as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                if row["min_age"] not in dct:
+                    dct[row["min_age"]] = {}
+                if row["sex"] not in dct[row["min_age"]]:
+                    dct[row["min_age"]][row["sex"]] = {}
+                if row["maternity"] not in dct[row["min_age"]][row["sex"]]:
+                    dct[row["min_age"]][row["sex"]][row["maternity"]] = {}
+                dct[row["min_age"]][row["sex"]][row["maternity"]] = {
+                    i: self.str_to_float(row[i]) for i in data_headers
+                }
+                if self.str_to_float(row["min_age"]) not in min_ages:
+                    min_ages.append(self.str_to_float(row["min_age"]))
+        min_age = self.float_to_str(max(age for age in min_ages if age < self.age))
+        sex = self.sex
+        if self.due_date:
+            maternity = "pregnant"
+        elif self.breastfeeding:
+            maternity = "breastfeeding"
+        else:
+            maternity = "none"
+        tul = dct[min_age][sex][maternity]
+        return tul
+
+    @property
+    def proteins(self):
+        dct = {}
+        min_ages = []
+        if self.desired_weight:
+            weight = float(self.desired_weight)
+        else:
+            weight = float(self.weight)
+        with open("data/proteins.csv") as csvfile:
+            data_headers = list(csv.reader(csvfile))[0]
+            remove_headers = ["min_age", "sex", "maternity"]
+            for i in remove_headers:
+                data_headers.remove(i)
+        with open("data/proteins.csv") as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                if row["min_age"] not in dct:
+                    dct[row["min_age"]] = {}
+                if row["sex"] not in dct[row["min_age"]]:
+                    dct[row["min_age"]][row["sex"]] = {}
+                if row["maternity"] not in dct[row["min_age"]][row["sex"]]:
+                    dct[row["min_age"]][row["sex"]][row["maternity"]] = {}
+                dct[row["min_age"]][row["sex"]][row["maternity"]] = {
+                    i: self.str_to_float(row[i]) * weight for i in data_headers
+                }
+                if self.str_to_float(row["min_age"]) not in min_ages:
+                    min_ages.append(self.str_to_float(row["min_age"]))
+        min_age = self.float_to_str(max(age for age in min_ages if age < self.age))
+        sex = self.sex
+        if self.due_date:
+            maternity = "pregnant"
+        elif self.breastfeeding:
+            maternity = "breastfeeding"
+        else:
+            maternity = "none"
+        proteins = dct[min_age][sex][maternity]
+        return proteins
 
     @classmethod
     def get(cls):

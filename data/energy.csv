@@ -21,7 +21,7 @@ min_age,sex,maternity,stage,PAL,min_BMI,constant,age_param,height_param,weight_p
 14,male,none,none,Very active,none,-671.75,3.68,15.38,23.25,20,0,0,0,0
 19,male,none,none,Inactive,none,753.07,-10.83,6.5,14.1,0,0,0,0,0
 19,male,none,none,Low active,none,581.47,-10.83,8.3,14.94,0,0,0,0,0
-19,male,none,none,Active,none,"1,004.82",-10.83,6.52,15.91,0,0,0,0,0
+19,male,none,none,Active,none,1004.82,-10.83,6.52,15.91,0,0,0,0,0
 19,male,none,none,Very active,none,-517.88,-10.83,15.61,19.11,0,0,0,0,0
 0,female,none,none,none,none,-69.15,80,2.65,54.15,180,0,0,0,0
 0.25,female,none,none,none,none,-69.15,80,2.65,54.15,60,0,0,0,0
