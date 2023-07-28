@@ -1,34 +1,53 @@
 from datetime import date
 import uuid
 from math import floor
+import re
+import csv
+
 
 class Person:
-    def __init__(self, name, dob, sex, pregnant=None, breastfeeding=None):
+    def __init__(
+        self,
+        name,
+        dob,
+        sex,
+        height,
+        weight,
+        due_date=None,
+        breastfeeding=None,
+        pal=None,
+        desired_weight=None,
+        desired_bmi=None,
+    ):
         self.name = name
         self.dob = dob
         self.sex = sex
-        self.pregnant = pregnant
+        self.height = height
+        self.weight = weight
+        self.due_date = due_date
         self.breastfeeding = breastfeeding
+        self.pal = pal
+        self.desired_weight = desired_weight
+        self.desired_bmi = desired_bmi
         # Add unique user id. check if it's already taken (check against user file once established)
         uid = uuid.uuid1()
         if uid not in []:
             self.uid = uid
 
     def __str__(self):
-        if self.pregnant:
-            return f"{self.name}, {self.sex}, aged {self._age_rounded}, currently pregnant in trimester {self.pregnant}."
+        if self.due_date:
+            return f"{self.name}, {self.sex}, aged {self.age_rounded}, currently {self.gestation} weeks pregnant in trimester {self.trimester}."
         elif self.breastfeeding == 1:
-            return f"{self.name}, {self.sex}, aged {self._age_rounded} currently into 1st 6 months of breastfeeding."
+            return f"{self.name}, {self.sex}, aged {self.age_rounded} currently into 1st 6 months of breastfeeding."
         elif self.breastfeeding == 2:
-            return f"{self.name}, {self.sex}, aged {self._age_rounded} currently breastfeeding, more than 6 months in."
+            return f"{self.name}, {self.sex}, aged {self.age_rounded} currently breastfeeding, more than 6 months in."
         else:
-            return f"{self.name}, {self.sex}, aged {self._age_rounded}."
-        
-    
+            return f"{self.name}, {self.sex}, aged {self.age_rounded}."
+
     @property
     def name(self):
         return self._name
-    
+
     @name.setter
     def name(self, name):
         name = name.strip().title()
@@ -42,84 +61,345 @@ class Person:
     @property
     def dob(self):
         return self._dob
-    
+
     @dob.setter
     def dob(self, dob):
         if not dob:
             raise ValueError("Must provide a date of birth")
+        dob = re.sub(r"[^0-9\-]", "", dob)
         try:
             date.fromisoformat(dob)
         except:
             raise ValueError("Must provide date of birth in the isoformat: yyyy-mm-dd")
         if date.fromisoformat(dob) > date.today():
             raise ValueError("Must provide a date from the past")
-        delta = date.today() - date.fromisoformat(dob)
-        age = delta.days/365
-        if age < 1:
-            self._age_rounded = floor(age * 100) / 100
-        else:
-            self._age_rounded = floor(age)
         self._dob = dob
-        self._age = age
 
-        
+    @property
+    def age(self):
+        delta = date.today() - date.fromisoformat(self.dob)
+        return delta.days / 365
+
+    @property
+    def age_rounded(self):
+        if self.age < 1:
+            return floor(self.age * 100) / 100
+        else:
+            return floor(self.age)
+
     @property
     def sex(self):
         return self._sex
-    
+
     @sex.setter
     def sex(self, sex):
         sex = sex.strip().lower()
         if not sex:
             raise ValueError("Must provide the person's sex.")
-        # Check against stored file/db with usersexs
-        if sex in ['male', 'm']:
-            sex = 'male'
-        elif sex in ['female', 'f']:
-            sex = 'female'
+        if sex in ["male", "m"]:
+            sex = "male"
+        elif sex in ["female", "f"]:
+            sex = "female"
         else:
             raise ValueError("Provide 'm', 'male', 'f', or 'female'")
         self._sex = sex
 
     @property
-    def pregnant(self):
-        return self._pregnant
-    
-    @pregnant.setter
-    def pregnant(self, pregnant):
-        if  pregnant:
-            if pregnant not in [1, 2, 3]:
-                raise ValueError("Provide number for trimester (1, 2 or 3)")
-        self._pregnant = pregnant
+    def height(self):
+        return self._height
+
+    @height.setter
+    def height(self, height):
+        try:
+            height = float(re.sub(r"[^0-9.]", "", height))
+        except:
+            raise ValueError("Provide a number for height in cm")
+        if height > 0:
+            self._height = height
+        else:
+            raise ValueError("Provide a number greater than 0 for height in cm")
+
+    @property
+    def weight(self):
+        return self._weight
+
+    @weight.setter
+    def weight(self, weight):
+        try:
+            weight = float(re.sub(r"[^0-9.]", "", weight))
+        except:
+            raise ValueError("Provide a number for weight in kg")
+        if weight > 0:
+            self._weight = weight
+        else:
+            raise ValueError("Provide a number greater than 0 for weight in kg")
+
+    @property
+    def bmi(self):
+        return self.weight / ((self.height / 100) ** 2)
+
+    @property
+    def due_date(self):
+        return self._due_date
+
+    @due_date.setter
+    def due_date(self, due_date):
+        if due_date:
+            due_date = re.sub(r"[^0-9\-]", "", due_date)
+            try:
+                date.fromisoformat(due_date)
+            except:
+                raise ValueError("Must provide due date in the isoformat: yyyy-mm-dd")
+            if date.fromisoformat(due_date) < date.today():
+                due_date = None
+            self._due_date = date.fromisoformat(due_date)
+        else:
+            self._due_date = None
+
+    @property
+    def gestation(self):
+        if self.due_date:
+            days_left = self.due_date - date.today()
+            print(date.today())
+            week = 1 + (280 - days_left.days) // 7
+            return week
+        else:
+            return None
+
+    @property
+    def trimester(self):
+        if self.gestation > 28:
+            return 3
+        elif self.gestation > 12:
+            return 2
+        elif self.gestation > 0:
+            return 1
+        else:
+            return None
 
     @property
     def breastfeeding(self):
         return self._breastfeeding
-    
+
     @breastfeeding.setter
     def breastfeeding(self, breastfeeding):
-        if  breastfeeding:
+        if breastfeeding:
             if breastfeeding not in [1, 2]:
-                raise ValueError("Use 1 to indicate breastfeeding within 1st 6 months, use 2 to indicate breastfeeding after.")
+                raise ValueError(
+                    "Use 1 to indicate breastfeeding within 1st 6 months, use 2 to indicate breastfeeding after."
+                )
         self._breastfeeding = breastfeeding
+
+    @property
+    def pal(self):
+        return self._pal
+
+    @pal.setter
+    def pal(self, pal):
+        pal = pal.strip().lower()
+        if not pal:
+            raise ValueError("Must provide the person's physical activity level.")
+        if pal in [1, "1", "inactive"]:
+            pal = "Inactive"
+        elif pal in [2, "2", "low active"]:
+            pal = "Low active"
+        elif pal in [3, "3", "active"]:
+            pal = "Active"
+        elif pal in [4, "4", "very active"]:
+            pal = "Very active"
+        else:
+            raise ValueError(
+                "Provide activity level as number (1 to 4) or text. e.g. 1, or 'Inactive'."
+            )
+        self._pal = pal
+
+    @property
+    def kcal(self):
+        def str_to_float(s):
+            s = s.replace(",", "")
+            try:
+                return float(s)
+            except:
+                return s
+
+        def float_to_str(n):
+            if n.is_integer():
+                return str(int(n))
+            else:
+                return str(n)
+            
+        dct = {}
+        min_ages = []
+        min_BMIs = []
+        with open("data/energy.csv") as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                if row["min_age"] not in dct:
+                    dct[row["min_age"]] = {}
+                if row["sex"] not in dct[row["min_age"]]:
+                    dct[row["min_age"]][row["sex"]] = {}
+                if row["maternity"] not in dct[row["min_age"]][row["sex"]]:
+                    dct[row["min_age"]][row["sex"]][row["maternity"]] = {}
+                if (
+                    row["stage"]
+                    not in dct[row["min_age"]][row["sex"]][row["maternity"]]
+                ):
+                    dct[row["min_age"]][row["sex"]][row["maternity"]][row["stage"]] = {}
+                if (
+                    row["PAL"]
+                    not in dct[row["min_age"]][row["sex"]][row["maternity"]][
+                        row["stage"]
+                    ]
+                ):
+                    dct[row["min_age"]][row["sex"]][row["maternity"]][row["stage"]][
+                        row["PAL"]
+                    ] = {}
+                if (
+                    row["min_BMI"]
+                    not in dct[row["min_age"]][row["sex"]][row["maternity"]][
+                        row["stage"]
+                    ][row["PAL"]]
+                ):
+                    dct[row["min_age"]][row["sex"]][row["maternity"]][row["stage"]][
+                        row["PAL"]
+                    ][row["min_BMI"]] = {}
+                dct[row["min_age"]][row["sex"]][row["maternity"]][row["stage"]][
+                    row["PAL"]
+                ][row["min_BMI"]] = {
+                    "constant": str_to_float(row["constant"]),
+                    "age_param": str_to_float(row["age_param"]),
+                    "height_param": str_to_float(row["height_param"]),
+                    "weight_param": str_to_float(row["weight_param"]),
+                    "growth_cost": str_to_float(row["growth_cost"]),
+                    "gestation_param": str_to_float(row["gestation_param"]),
+                    "energy_deposition": str_to_float(row["energy_deposition"]),
+                    "milk_production": str_to_float(row["milk_production"]),
+                    "energy_mobilization": str_to_float(row["energy_mobilization"]),
+                }
+                if float(row["min_age"]) not in min_ages:
+                    min_ages.append(float(row["min_age"]))
+                if row["min_BMI"] != "none":
+                    if float(row["min_BMI"]) not in min_BMIs:
+                        min_BMIs.append(float(row["min_BMI"]))
+        min_age = float_to_str(max(age for age in min_ages if age < self.age))
+        sex = self.sex
+        if self.due_date:
+            maternity = "pregnant"
+            stage = str(self.trimester)
+            if self.trimester > 1:
+                if self.desired_bmi:
+                    min_BMI = str(
+                        max(bmi for bmi in min_BMIs if bmi < self.desired_bmi)
+                    )
+                elif self.bmi:
+                    min_BMI = str(max(bmi for bmi in min_BMIs if bmi < self.bmi))
+                else:
+                    min_BMI = "none"
+        elif self.breastfeeding:
+            maternity = "breastfeeding"
+            stage = str(self.breastfeeding)
+        else:
+            maternity = "none"
+            stage = "none"
+            min_BMI = "none"
+        pal = self.pal
+        constant = dct[min_age][sex][maternity][stage][pal][min_BMI]["constant"]
+        age_param = dct[min_age][sex][maternity][stage][pal][min_BMI]["age_param"]
+        height_param = dct[min_age][sex][maternity][stage][pal][min_BMI]["height_param"]
+        weight_param = dct[min_age][sex][maternity][stage][pal][min_BMI]["weight_param"]
+        growth_cost = dct[min_age][sex][maternity][stage][pal][min_BMI]["growth_cost"]
+        gestation_param = dct[min_age][sex][maternity][stage][pal][min_BMI][
+            "gestation_param"
+        ]
+        energy_deposition = dct[min_age][sex][maternity][stage][pal][min_BMI][
+            "energy_deposition"
+        ]
+        milk_production = dct[min_age][sex][maternity][stage][pal][min_BMI][
+            "milk_production"
+        ]
+        energy_mobilization = dct[min_age][sex][maternity][stage][pal][min_BMI][
+            "energy_mobilization"
+        ]
+        if self.desired_weight:
+            weight = self.desired_weight
+        else:
+            weight = self.weight
+        if self.gestation:
+            gestation = self.gestation
+        else:
+            gestation = 0
+        kcal = (
+            constant
+            + (age_param * self.age)
+            + (height_param * self.height)
+            + (weight_param * weight)
+            + growth_cost
+            + (gestation_param * gestation)
+            + energy_deposition
+            + milk_production
+            + energy_mobilization
+        )
+        return kcal
 
     @classmethod
     def get(cls):
-        pregnant = None
+        due_date = None
         breastfeeding = None
+        due_date = None
         name = input("Username: ")
         dob = input("Date of birth (in the isoformat: yyyy-mm-dd): ")
         sex = input("Sex (male or female): ")
-        if sex.strip().lower() in ['f', 'female']:
+        if sex.strip().lower() in ["f", "female"]:
             check_pregnant = input("Are you pregnant (y/n): ")
-            if check_pregnant.strip().lower() in ['y', 'yes']:
-                pregnant = input("Which trimester are you in: ")
+            if check_pregnant.strip().lower() in ["y", "yes"]:
+                due_date = input("Due date (in the isoformat: yyyy-mm-dd): ")
             else:
                 check_breastfeeding = input("Are you breastfeeding (y/n): ")
-                if check_breastfeeding.strip().lower() in ['y', 'yes']:
-                    answer_breastfeeding = input("Have you been breastfeeding for more than 6 months (y/n): ")
-                    if answer_breastfeeding.strip().lower() in ['y', 'yes']:
+                if check_breastfeeding.strip().lower() in ["y", "yes"]:
+                    answer_breastfeeding = input(
+                        "Have you been breastfeeding for more than 6 months (y/n): "
+                    )
+                    if answer_breastfeeding.strip().lower() in ["y", "yes"]:
                         breastfeeding = 2
                     else:
                         breastfeeding = 1
-        return cls(name, dob, sex, pregnant, breastfeeding)
+        height = input("Height in cm: ")
+        weight = input("Height in kg: ")
+        age_delta = date.today() - date.fromisoformat(re.sub(r"[^0-9\-]", "", dob))
+        if age_delta.days / 365 > 1:
+            pal = input(
+                "What is your physical activity level? \n [1] 'Inactive', \n [2] 'Low active', \n [3] 'Active', \n [4] 'Very active' \n: "
+            )
+        else:
+            pal = None
+        check_desired_weight = input("Do you have a desired weight (y/n): ")
+        if check_desired_weight.strip().lower() in ["y", "yes"]:
+            check_calc_with_bmi = input(
+                "Would you like to calculate the desired weight based on a desired BMI (y/n): "
+            )
+            if check_calc_with_bmi.strip().lower() in ["y", "yes"]:
+                desired_bmi = float(
+                    input(
+                        "Desired BMI (18.5 < normal range < 25, with 22 a good default): "
+                    )
+                )
+                desired_weight = desired_bmi * ((float(height) / 100) ** 2)
+            else:
+                desired_weight = float(input("Desired weight in kg: "))
+                desired_bmi = desired_weight / ((float(height) / 100) ** 2)
+        else:
+            desired_weight = None
+            desired_bmi = None
+
+        return cls(
+            name,
+            dob,
+            sex,
+            height,
+            weight,
+            due_date,
+            breastfeeding,
+            pal,
+            desired_weight,
+            desired_bmi,
+        )
