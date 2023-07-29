@@ -3,6 +3,7 @@ import uuid
 from math import floor
 import re
 import csv
+import json
 
 
 class Person:
@@ -440,6 +441,110 @@ class Person:
             maternity = "none"
         proteins = dct[min_age][sex][maternity]
         return proteins
+    
+    @property
+    def energy_upper(self):
+        dct = {}
+        min_ages = []
+        kcal_to_gram = {}
+        with open("data/kcal_per_gram.csv") as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                kcal_to_gram[row['name']] = self.str_to_float(row['kcal/g'])
+        with open("data/energy_dist_upper.csv") as csvfile:
+            data_headers = list(csv.reader(csvfile))[0]
+            data_headers.remove("min_age")
+        with open("data/energy_dist_upper.csv") as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                if row["min_age"] not in dct:
+                    dct[row["min_age"]] = {}
+                dct[row["min_age"]] = {
+                    "Total Fat": (self.str_to_float(row["Total Fat"]) / 100) * self.kcal / kcal_to_gram['Total Fat'],
+                    "n-6 linoleic acid": (self.str_to_float(row["n-6 linoleic acid"]) / 100) * self.kcal / kcal_to_gram['Total Fat'],
+                    "n-3 a-linolenic Acid (ALA)": (self.str_to_float(row["n-3 a-linolenic Acid (ALA)"]) / 100) * self.kcal / kcal_to_gram['Total Fat'],
+                    "Total Carbohydrates": (self.str_to_float(row["Total Carbohydrates"]) / 100) * self.kcal / kcal_to_gram['Total Carbohydrates'],
+                    "Total Protein": (self.str_to_float(row["Total Protein"]) / 100) * self.kcal / kcal_to_gram['Total Protein'],
+                    "LC-PUFAs": (self.str_to_float(row["LC-PUFAs"]) / 100) * self.kcal / kcal_to_gram['Total Fat'],
+                }
+                if self.str_to_float(row["min_age"]) not in min_ages:
+                    min_ages.append(self.str_to_float(row["min_age"]))
+        min_age = self.float_to_str(max(age for age in min_ages if age < self.age))
+
+        energy_upper = dct[min_age]
+        return energy_upper
+
+    @property
+    def energy_lower(self):
+        dct = {}
+        min_ages = []
+        kcal_to_gram = {}
+        with open("data/kcal_per_gram.csv") as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                kcal_to_gram[row['name']] = self.str_to_float(row['kcal/g'])
+        with open("data/energy_dist_lower.csv") as csvfile:
+            data_headers = list(csv.reader(csvfile))[0]
+            data_headers.remove("min_age")
+        with open("data/energy_dist_lower.csv") as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                if row["min_age"] not in dct:
+                    dct[row["min_age"]] = {}
+                dct[row["min_age"]] = {
+                    "Total Fat": (self.str_to_float(row["Total Fat"]) / 100) * self.kcal / kcal_to_gram['Total Fat'],
+                    "n-6 linoleic acid": (self.str_to_float(row["n-6 linoleic acid"]) / 100) * self.kcal / kcal_to_gram['Total Fat'],
+                    "n-3 a-linolenic Acid (ALA)": (self.str_to_float(row["n-3 a-linolenic Acid (ALA)"]) / 100) * self.kcal / kcal_to_gram['Total Fat'],
+                    "Total Carbohydrates": (self.str_to_float(row["Total Carbohydrates"]) / 100) * self.kcal / kcal_to_gram['Total Carbohydrates'],
+                    "Total Protein": (self.str_to_float(row["Total Protein"]) / 100) * self.kcal / kcal_to_gram['Total Protein'],
+                    "LC-PUFAs": (self.str_to_float(row["LC-PUFAs"]) / 100) * self.kcal / kcal_to_gram['Total Fat'],
+                }
+                if self.str_to_float(row["min_age"]) not in min_ages:
+                    min_ages.append(self.str_to_float(row["min_age"]))
+        min_age = self.float_to_str(max(age for age in min_ages if age < self.age))
+
+        energy_lower = dct[min_age]
+        return energy_lower
+    
+    @property
+    def diet_rqmts(self):
+        dct = {}
+        with open('data/nutrient_keys.tsv') as tsvfile:
+            reader = csv.DictReader(tsvfile, dialect='excel-tab')
+            for row in reader:
+                if row['name'] not in dct:
+                    dct[row['name']] = {}
+                dct[row['name']]['unit'] = row['unit']
+                dct[row['name']]['nutrient_nbr'] = json.loads(row['nutrient_nbr'])
+                dct[row['name']]['nutrient_id'] = json.loads(row['nutrient_id'])
+                dct[row['name']]['amount_lower'] = None
+                dct[row['name']]['amount_upper'] = None
+                dct[row['name']]['amount_tul'] = None
+                if row['name'] in self.rda:
+                    dct[row['name']]['amount_lower'] = self.rda[row['name']]
+                    dct[row['name']]['amount_upper'] = self.rda[row['name']]
+                if row['name'] in self.tul:
+                    dct[row['name']]['amount_tul'] = self.tul[row['name']]
+                if row['name'] in self.proteins:
+                    dct[row['name']]['amount_lower'] = self.proteins[row['name']]
+                    dct[row['name']]['amount_upper'] = self.proteins[row['name']]
+
+        dct['Energy']['amount_lower'] = self.kcal
+        dct['Energy']['amount_upper'] = self.kcal
+        dct['Total Fat']['amount_lower'] = max(self.energy_lower['Total Fat'], self.rda['Total Fat'])
+        dct['Total Fat']['amount_upper'] = max(self.energy_upper['Total Fat'], self.rda['Total Fat'])
+        dct['n-6 linoleic acid']['amount_lower'] = max(self.energy_lower['n-6 linoleic acid'], self.rda['n-6 linoleic acid'])
+        dct['n-6 linoleic acid']['amount_upper'] = max(self.energy_upper['n-6 linoleic acid'], self.rda['n-6 linoleic acid'])
+        dct['n-3 a-linolenic Acid (ALA)']['amount_lower'] = max(self.energy_lower['n-3 a-linolenic Acid (ALA)'], self.rda['n-3 a-linolenic Acid (ALA)'])
+        dct['n-3 a-linolenic Acid (ALA)']['amount_upper'] = max(self.energy_upper['n-3 a-linolenic Acid (ALA)'], self.rda['n-3 a-linolenic Acid (ALA)'])
+        dct['Total Carbohydrates']['amount_lower'] = max(self.energy_lower['Total Carbohydrates'], self.rda['Total Carbohydrates'])
+        dct['Total Carbohydrates']['amount_upper'] = max(self.energy_upper['Total Carbohydrates'], self.rda['Total Carbohydrates'])
+        dct['Total Protein']['amount_lower'] = max(self.energy_lower['Total Protein'], self.proteins['Total Protein'])
+        dct['Total Protein']['amount_upper'] = max(self.energy_upper['Total Protein'], self.rda['Total Protein'], self.proteins['Total Protein'])
+        dct['LC-PUFAs']['amount_lower'] = self.energy_lower['LC-PUFAs']
+        dct['LC-PUFAs']['amount_upper'] = self.energy_upper['LC-PUFAs']        
+        
+        return dct
 
     @classmethod
     def get(cls):
@@ -464,7 +569,7 @@ class Person:
                     else:
                         breastfeeding = 1
         height = input("Height in cm: ")
-        weight = input("Height in kg: ")
+        weight = input("Weight in kg: ")
         age_delta = date.today() - date.fromisoformat(re.sub(r"[^0-9\-]", "", dob))
         if age_delta.days / 365 > 1:
             pal = input(

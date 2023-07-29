@@ -9,7 +9,7 @@ import json
 
 
 def main():
-    # extract_us_energy_dist()
+    extract_us_energy_dist()
     extract_us_nutrient_reqs()
 
 
@@ -172,12 +172,12 @@ def extract_us_nutrient_reqs():
     rda["Copper"] = pd.to_numeric(rda["Copper"]).div(1000).fillna(0)
     rda["Fluoride"] = pd.to_numeric(rda["Fluoride"]).mul(1000).fillna(0)
     # Duplicate where 'sex' is 'none' to 'male' and 'female'.
-    rda_none = rda.loc[pd.IndexSlice[:,'none'], :]
+    rda_none = rda.loc[pd.IndexSlice[:, "none"], :]
     rda_male = rda_none.copy()
-    rda_male.index = rda_male.index.set_levels(['1', '2', 'male'], level='sex')
+    rda_male.index = rda_male.index.set_levels(["1", "2", "male"], level="sex")
     rda_female = rda_none.copy()
-    rda_female.index = rda_female.index.set_levels(['1', '2', 'female'], level='sex')
-    rda_not_none = rda.loc[pd.IndexSlice[:,['male', 'female']], :]
+    rda_female.index = rda_female.index.set_levels(["1", "2", "female"], level="sex")
+    rda_not_none = rda.loc[pd.IndexSlice[:, ["male", "female"]], :]
     rda_new = pd.concat([rda_not_none, rda_male, rda_female])
     # Export rdas to a csv.
     rda_new.replace("", 0).to_csv("data/rda.csv")
@@ -243,8 +243,8 @@ def extract_us_nutrient_reqs():
     tul["Copper"] = pd.to_numeric(tul["Copper"]).div(1000).fillna(0)
     tul["Fluoride"] = pd.to_numeric(tul["Fluoride"]).mul(1000).fillna(0)
     tul["Phosphorus"] = pd.to_numeric(tul["Phosphorus"]).mul(1000).fillna(0)
-    # Add Sodium limits from Appendix J, of 
-    # Dietary Reference Intakes for Sodium and Potassium (2019), 
+    # Add Sodium limits from Appendix J, of
+    # Dietary Reference Intakes for Sodium and Potassium (2019),
     # https://www.ncbi.nlm.nih.gov/books/NBK538102/pdf/Bookshelf_NBK538102.pdf.
     sodium = pd.DataFrame(
         {
@@ -280,12 +280,12 @@ def extract_us_nutrient_reqs():
         .set_index(["min_age", "sex", "maternity"])
     )
     # Duplicate where 'sex' is 'none' to 'male' and 'female'.
-    tul_none = tul.loc[pd.IndexSlice[:,'none'], :]
+    tul_none = tul.loc[pd.IndexSlice[:, "none"], :]
     tul_male = tul_none.copy()
-    tul_male.index = tul_male.index.set_levels(['1', '2', 'male'], level='sex')
+    tul_male.index = tul_male.index.set_levels(["1", "2", "male"], level="sex")
     tul_female = tul_none.copy()
-    tul_female.index = tul_female.index.set_levels(['1', '2', 'female'], level='sex')
-    tul_not_none = tul.loc[pd.IndexSlice[:,['male', 'female']], :]
+    tul_female.index = tul_female.index.set_levels(["1", "2", "female"], level="sex")
+    tul_not_none = tul.loc[pd.IndexSlice[:, ["male", "female"]], :]
     tul_new = pd.concat([tul_not_none, tul_male, tul_female])
     # Export tuls to a csv.
     tul_new.to_csv("data/tul.csv")
@@ -338,10 +338,9 @@ def extract_us_energy_dist():
         },
     )
 
-    # Add sugars of 0-25% based on added sugars for all sugars
-    energy_distribution['Total Sugars'] = '0–25'
     # Add Long-chain Poly-Unsaturated Fat (LC-PUFAs) requirement of 10% of n-3 and n-6 fatty acids
-    energy_distribution['LC-PUFAs'] = '0.56–1.12'
+    energy_distribution["LC-PUFAs"] = "0.56–1.12"
+
     # Function to extract part of each string to left (n = 0), or right (n = 1) of '-'.
     def extract_part(s, n):
         return s.split("–")[n]
