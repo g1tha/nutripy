@@ -12,11 +12,28 @@ print(person.uid)
 print(person.bmi)
 print(person.desired_bmi)
 print(person.desired_weight)
-print(person.kcal)
-print(person.rda['Iron'])
-print(person.tul['Retinol'])
-print(person.proteins)
-print(person.energy_upper)
-print(person.energy_lower)
+
 for nutrient in person.diet_rqmts:
-    print(f"{nutrient}: {person.diet_rqmts[nutrient]['amount_lower']} {person.diet_rqmts[nutrient]['unit']}")
+    if (
+        person.diet_rqmts[nutrient]["amount_lower"]
+        and person.diet_rqmts[nutrient]["amount_upper"]
+        and person.diet_rqmts[nutrient]["amount_lower"]
+        != person.diet_rqmts[nutrient]["amount_upper"]
+    ):
+        if person.diet_rqmts[nutrient]["amount_tul"]:
+            print(
+                f"{nutrient}: {person.diet_rqmts[nutrient]['amount_lower']:.2f}-{person.diet_rqmts[nutrient]['amount_upper']:.2f} ({person.diet_rqmts[nutrient]['amount_tul']:.2f} limit) {person.diet_rqmts[nutrient]['unit']}"
+            )
+        else:
+            print(
+                f"{nutrient}: {person.diet_rqmts[nutrient]['amount_lower']:.2f}-{person.diet_rqmts[nutrient]['amount_upper']:.2f} {person.diet_rqmts[nutrient]['unit']}"
+            )
+    elif person.diet_rqmts[nutrient]["amount_lower"]:
+        if person.diet_rqmts[nutrient]["amount_tul"]:
+            print(
+                f"{nutrient}: {person.diet_rqmts[nutrient]['amount_lower']:.2f} ({person.diet_rqmts[nutrient]['amount_tul']:.2f} limit) {person.diet_rqmts[nutrient]['unit']}"
+            )
+        else:
+            print(
+                f"{nutrient}: {person.diet_rqmts[nutrient]['amount_lower']:.2f} {person.diet_rqmts[nutrient]['unit']}"
+            )

@@ -45,18 +45,6 @@ class Person:
         else:
             return f"{self.name}, {self.sex}, aged {self.age_rounded}."
 
-    def float_to_str(self, n):
-        if n.is_integer():
-            return str(int(n))
-        else:
-            return str(n)
-
-    def str_to_float(self, s):
-        try:
-            return float(s)
-        except (ValueError, TypeError):
-            return 0
-
     @property
     def name(self):
         return self._name
@@ -227,323 +215,413 @@ class Person:
         self._pal = pal
 
     @property
-    def kcal(self):
-        dct = {}
-        min_ages = []
-        min_BMIs = []
-        with open("data/energy.csv") as csvfile:
-            data_headers = list(csv.reader(csvfile))[0]
-            remove_headers = ["min_age", "sex", "maternity", "stage", "PAL", "min_BMI"]
-            for i in remove_headers:
-                data_headers.remove(i)
-        with open("data/energy.csv") as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                if row["min_age"] not in dct:
-                    dct[row["min_age"]] = {}
-                if row["sex"] not in dct[row["min_age"]]:
-                    dct[row["min_age"]][row["sex"]] = {}
-                if row["maternity"] not in dct[row["min_age"]][row["sex"]]:
-                    dct[row["min_age"]][row["sex"]][row["maternity"]] = {}
-                if (
-                    row["stage"]
-                    not in dct[row["min_age"]][row["sex"]][row["maternity"]]
-                ):
-                    dct[row["min_age"]][row["sex"]][row["maternity"]][row["stage"]] = {}
-                if (
-                    row["PAL"]
-                    not in dct[row["min_age"]][row["sex"]][row["maternity"]][
-                        row["stage"]
-                    ]
-                ):
-                    dct[row["min_age"]][row["sex"]][row["maternity"]][row["stage"]][
-                        row["PAL"]
-                    ] = {}
-                if (
-                    row["min_BMI"]
-                    not in dct[row["min_age"]][row["sex"]][row["maternity"]][
-                        row["stage"]
-                    ][row["PAL"]]
-                ):
-                    dct[row["min_age"]][row["sex"]][row["maternity"]][row["stage"]][
-                        row["PAL"]
-                    ][row["min_BMI"]] = {}
-                dct[row["min_age"]][row["sex"]][row["maternity"]][row["stage"]][
-                    row["PAL"]
-                ][row["min_BMI"]] = {i: self.str_to_float(row[i]) for i in data_headers}
-                if self.str_to_float(row["min_age"]) not in min_ages:
-                    min_ages.append(self.str_to_float(row["min_age"]))
-                if row["min_BMI"] != "none":
-                    if self.str_to_float(row["min_BMI"]) not in min_BMIs:
-                        min_BMIs.append(self.str_to_float(row["min_BMI"]))
-        min_age = self.float_to_str(max(age for age in min_ages if age < self.age))
-        sex = self.sex
-        if self.due_date:
-            maternity = "pregnant"
-            stage = str(self.trimester)
-            if self.trimester > 1:
-                if self.desired_bmi:
-                    min_BMI = str(
-                        max(bmi for bmi in min_BMIs if bmi < self.desired_bmi)
-                    )
-                elif self.bmi:
-                    min_BMI = str(max(bmi for bmi in min_BMIs if bmi < self.bmi))
-                else:
-                    min_BMI = "none"
-        elif self.breastfeeding:
-            maternity = "breastfeeding"
-            stage = str(self.breastfeeding)
-        else:
-            maternity = "none"
-            stage = "none"
-            min_BMI = "none"
-        pal = self.pal
-        constant = dct[min_age][sex][maternity][stage][pal][min_BMI]["constant"]
-        age_param = dct[min_age][sex][maternity][stage][pal][min_BMI]["age_param"]
-        height_param = dct[min_age][sex][maternity][stage][pal][min_BMI]["height_param"]
-        weight_param = dct[min_age][sex][maternity][stage][pal][min_BMI]["weight_param"]
-        growth_cost = dct[min_age][sex][maternity][stage][pal][min_BMI]["growth_cost"]
-        gestation_param = dct[min_age][sex][maternity][stage][pal][min_BMI][
-            "gestation_param"
-        ]
-        energy_deposition = dct[min_age][sex][maternity][stage][pal][min_BMI][
-            "energy_deposition"
-        ]
-        milk_production = dct[min_age][sex][maternity][stage][pal][min_BMI][
-            "milk_production"
-        ]
-        energy_mobilization = dct[min_age][sex][maternity][stage][pal][min_BMI][
-            "energy_mobilization"
-        ]
-        if self.desired_weight:
-            weight = self.desired_weight
-        else:
-            weight = self.weight
-        if self.gestation:
-            gestation = self.gestation
-        else:
-            gestation = 0
-        kcal = (
-            constant
-            + (age_param * self.age)
-            + (height_param * self.height)
-            + (weight_param * weight)
-            + growth_cost
-            + (gestation_param * gestation)
-            + energy_deposition
-            + milk_production
-            + energy_mobilization
-        )
-        return kcal
-
-    @property
-    def rda(self):
-        dct = {}
-        min_ages = []
-        with open("data/rda.csv") as csvfile:
-            data_headers = list(csv.reader(csvfile))[0]
-            remove_headers = ["min_age", "sex", "maternity"]
-            for i in remove_headers:
-                data_headers.remove(i)
-        with open("data/rda.csv") as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                if row["min_age"] not in dct:
-                    dct[row["min_age"]] = {}
-                if row["sex"] not in dct[row["min_age"]]:
-                    dct[row["min_age"]][row["sex"]] = {}
-                if row["maternity"] not in dct[row["min_age"]][row["sex"]]:
-                    dct[row["min_age"]][row["sex"]][row["maternity"]] = {}
-                dct[row["min_age"]][row["sex"]][row["maternity"]] = {
-                    i: self.str_to_float(row[i]) for i in data_headers
-                }
-                if self.str_to_float(row["min_age"]) not in min_ages:
-                    min_ages.append(self.str_to_float(row["min_age"]))
-        min_age = self.float_to_str(max(age for age in min_ages if age < self.age))
-        sex = self.sex
-        if self.due_date:
-            maternity = "pregnant"
-        elif self.breastfeeding:
-            maternity = "breastfeeding"
-        else:
-            maternity = "none"
-        rda = dct[min_age][sex][maternity]
-        return rda
-
-    @property
-    def tul(self):
-        dct = {}
-        min_ages = []
-        with open("data/tul.csv") as csvfile:
-            data_headers = list(csv.reader(csvfile))[0]
-            remove_headers = ["min_age", "sex", "maternity"]
-            for i in remove_headers:
-                data_headers.remove(i)
-        with open("data/tul.csv") as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                if row["min_age"] not in dct:
-                    dct[row["min_age"]] = {}
-                if row["sex"] not in dct[row["min_age"]]:
-                    dct[row["min_age"]][row["sex"]] = {}
-                if row["maternity"] not in dct[row["min_age"]][row["sex"]]:
-                    dct[row["min_age"]][row["sex"]][row["maternity"]] = {}
-                dct[row["min_age"]][row["sex"]][row["maternity"]] = {
-                    i: self.str_to_float(row[i]) for i in data_headers
-                }
-                if self.str_to_float(row["min_age"]) not in min_ages:
-                    min_ages.append(self.str_to_float(row["min_age"]))
-        min_age = self.float_to_str(max(age for age in min_ages if age < self.age))
-        sex = self.sex
-        if self.due_date:
-            maternity = "pregnant"
-        elif self.breastfeeding:
-            maternity = "breastfeeding"
-        else:
-            maternity = "none"
-        tul = dct[min_age][sex][maternity]
-        return tul
-
-    @property
-    def proteins(self):
-        dct = {}
-        min_ages = []
-        if self.desired_weight:
-            weight = float(self.desired_weight)
-        else:
-            weight = float(self.weight)
-        with open("data/proteins.csv") as csvfile:
-            data_headers = list(csv.reader(csvfile))[0]
-            remove_headers = ["min_age", "sex", "maternity"]
-            for i in remove_headers:
-                data_headers.remove(i)
-        with open("data/proteins.csv") as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                if row["min_age"] not in dct:
-                    dct[row["min_age"]] = {}
-                if row["sex"] not in dct[row["min_age"]]:
-                    dct[row["min_age"]][row["sex"]] = {}
-                if row["maternity"] not in dct[row["min_age"]][row["sex"]]:
-                    dct[row["min_age"]][row["sex"]][row["maternity"]] = {}
-                dct[row["min_age"]][row["sex"]][row["maternity"]] = {
-                    i: self.str_to_float(row[i]) * weight for i in data_headers
-                }
-                if self.str_to_float(row["min_age"]) not in min_ages:
-                    min_ages.append(self.str_to_float(row["min_age"]))
-        min_age = self.float_to_str(max(age for age in min_ages if age < self.age))
-        sex = self.sex
-        if self.due_date:
-            maternity = "pregnant"
-        elif self.breastfeeding:
-            maternity = "breastfeeding"
-        else:
-            maternity = "none"
-        proteins = dct[min_age][sex][maternity]
-        return proteins
-    
-    @property
-    def energy_upper(self):
-        dct = {}
-        min_ages = []
-        kcal_to_gram = {}
-        with open("data/kcal_per_gram.csv") as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                kcal_to_gram[row['name']] = self.str_to_float(row['kcal/g'])
-        with open("data/energy_dist_upper.csv") as csvfile:
-            data_headers = list(csv.reader(csvfile))[0]
-            data_headers.remove("min_age")
-        with open("data/energy_dist_upper.csv") as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                if row["min_age"] not in dct:
-                    dct[row["min_age"]] = {}
-                dct[row["min_age"]] = {
-                    "Total Fat": (self.str_to_float(row["Total Fat"]) / 100) * self.kcal / kcal_to_gram['Total Fat'],
-                    "n-6 linoleic acid": (self.str_to_float(row["n-6 linoleic acid"]) / 100) * self.kcal / kcal_to_gram['Total Fat'],
-                    "n-3 a-linolenic Acid (ALA)": (self.str_to_float(row["n-3 a-linolenic Acid (ALA)"]) / 100) * self.kcal / kcal_to_gram['Total Fat'],
-                    "Total Carbohydrates": (self.str_to_float(row["Total Carbohydrates"]) / 100) * self.kcal / kcal_to_gram['Total Carbohydrates'],
-                    "Total Protein": (self.str_to_float(row["Total Protein"]) / 100) * self.kcal / kcal_to_gram['Total Protein'],
-                    "LC-PUFAs": (self.str_to_float(row["LC-PUFAs"]) / 100) * self.kcal / kcal_to_gram['Total Fat'],
-                }
-                if self.str_to_float(row["min_age"]) not in min_ages:
-                    min_ages.append(self.str_to_float(row["min_age"]))
-        min_age = self.float_to_str(max(age for age in min_ages if age < self.age))
-
-        energy_upper = dct[min_age]
-        return energy_upper
-
-    @property
-    def energy_lower(self):
-        dct = {}
-        min_ages = []
-        kcal_to_gram = {}
-        with open("data/kcal_per_gram.csv") as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                kcal_to_gram[row['name']] = self.str_to_float(row['kcal/g'])
-        with open("data/energy_dist_lower.csv") as csvfile:
-            data_headers = list(csv.reader(csvfile))[0]
-            data_headers.remove("min_age")
-        with open("data/energy_dist_lower.csv") as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                if row["min_age"] not in dct:
-                    dct[row["min_age"]] = {}
-                dct[row["min_age"]] = {
-                    "Total Fat": (self.str_to_float(row["Total Fat"]) / 100) * self.kcal / kcal_to_gram['Total Fat'],
-                    "n-6 linoleic acid": (self.str_to_float(row["n-6 linoleic acid"]) / 100) * self.kcal / kcal_to_gram['Total Fat'],
-                    "n-3 a-linolenic Acid (ALA)": (self.str_to_float(row["n-3 a-linolenic Acid (ALA)"]) / 100) * self.kcal / kcal_to_gram['Total Fat'],
-                    "Total Carbohydrates": (self.str_to_float(row["Total Carbohydrates"]) / 100) * self.kcal / kcal_to_gram['Total Carbohydrates'],
-                    "Total Protein": (self.str_to_float(row["Total Protein"]) / 100) * self.kcal / kcal_to_gram['Total Protein'],
-                    "LC-PUFAs": (self.str_to_float(row["LC-PUFAs"]) / 100) * self.kcal / kcal_to_gram['Total Fat'],
-                }
-                if self.str_to_float(row["min_age"]) not in min_ages:
-                    min_ages.append(self.str_to_float(row["min_age"]))
-        min_age = self.float_to_str(max(age for age in min_ages if age < self.age))
-
-        energy_lower = dct[min_age]
-        return energy_lower
-    
-    @property
     def diet_rqmts(self):
-        dct = {}
-        with open('data/nutrient_keys.tsv') as tsvfile:
-            reader = csv.DictReader(tsvfile, dialect='excel-tab')
-            for row in reader:
-                if row['name'] not in dct:
-                    dct[row['name']] = {}
-                dct[row['name']]['unit'] = row['unit']
-                dct[row['name']]['nutrient_nbr'] = json.loads(row['nutrient_nbr'])
-                dct[row['name']]['nutrient_id'] = json.loads(row['nutrient_id'])
-                dct[row['name']]['amount_lower'] = None
-                dct[row['name']]['amount_upper'] = None
-                dct[row['name']]['amount_tul'] = None
-                if row['name'] in self.rda:
-                    dct[row['name']]['amount_lower'] = self.rda[row['name']]
-                    dct[row['name']]['amount_upper'] = self.rda[row['name']]
-                if row['name'] in self.tul:
-                    dct[row['name']]['amount_tul'] = self.tul[row['name']]
-                if row['name'] in self.proteins:
-                    dct[row['name']]['amount_lower'] = self.proteins[row['name']]
-                    dct[row['name']]['amount_upper'] = self.proteins[row['name']]
+        def float_to_str(n):
+            if n.is_integer():
+                return str(int(n))
+            else:
+                return str(n)
 
-        dct['Energy']['amount_lower'] = self.kcal
-        dct['Energy']['amount_upper'] = self.kcal
-        dct['Total Fat']['amount_lower'] = max(self.energy_lower['Total Fat'], self.rda['Total Fat'])
-        dct['Total Fat']['amount_upper'] = max(self.energy_upper['Total Fat'], self.rda['Total Fat'])
-        dct['n-6 linoleic acid']['amount_lower'] = max(self.energy_lower['n-6 linoleic acid'], self.rda['n-6 linoleic acid'])
-        dct['n-6 linoleic acid']['amount_upper'] = max(self.energy_upper['n-6 linoleic acid'], self.rda['n-6 linoleic acid'])
-        dct['n-3 a-linolenic Acid (ALA)']['amount_lower'] = max(self.energy_lower['n-3 a-linolenic Acid (ALA)'], self.rda['n-3 a-linolenic Acid (ALA)'])
-        dct['n-3 a-linolenic Acid (ALA)']['amount_upper'] = max(self.energy_upper['n-3 a-linolenic Acid (ALA)'], self.rda['n-3 a-linolenic Acid (ALA)'])
-        dct['Total Carbohydrates']['amount_lower'] = max(self.energy_lower['Total Carbohydrates'], self.rda['Total Carbohydrates'])
-        dct['Total Carbohydrates']['amount_upper'] = max(self.energy_upper['Total Carbohydrates'], self.rda['Total Carbohydrates'])
-        dct['Total Protein']['amount_lower'] = max(self.energy_lower['Total Protein'], self.proteins['Total Protein'])
-        dct['Total Protein']['amount_upper'] = max(self.energy_upper['Total Protein'], self.rda['Total Protein'], self.proteins['Total Protein'])
-        dct['LC-PUFAs']['amount_lower'] = self.energy_lower['LC-PUFAs']
-        dct['LC-PUFAs']['amount_upper'] = self.energy_upper['LC-PUFAs']        
-        
+        def str_to_float(s):
+            try:
+                return float(s)
+            except (ValueError, TypeError):
+                return 0
+
+        def kcal():
+            dct = {}
+            min_ages = []
+            min_BMIs = []
+            with open("data/energy.csv") as csvfile:
+                data_headers = list(csv.reader(csvfile))[0]
+                remove_headers = [
+                    "min_age",
+                    "sex",
+                    "maternity",
+                    "stage",
+                    "PAL",
+                    "min_BMI",
+                ]
+                for i in remove_headers:
+                    data_headers.remove(i)
+            with open("data/energy.csv") as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    if row["min_age"] not in dct:
+                        dct[row["min_age"]] = {}
+                    if row["sex"] not in dct[row["min_age"]]:
+                        dct[row["min_age"]][row["sex"]] = {}
+                    if row["maternity"] not in dct[row["min_age"]][row["sex"]]:
+                        dct[row["min_age"]][row["sex"]][row["maternity"]] = {}
+                    if (
+                        row["stage"]
+                        not in dct[row["min_age"]][row["sex"]][row["maternity"]]
+                    ):
+                        dct[row["min_age"]][row["sex"]][row["maternity"]][
+                            row["stage"]
+                        ] = {}
+                    if (
+                        row["PAL"]
+                        not in dct[row["min_age"]][row["sex"]][row["maternity"]][
+                            row["stage"]
+                        ]
+                    ):
+                        dct[row["min_age"]][row["sex"]][row["maternity"]][row["stage"]][
+                            row["PAL"]
+                        ] = {}
+                    if (
+                        row["min_BMI"]
+                        not in dct[row["min_age"]][row["sex"]][row["maternity"]][
+                            row["stage"]
+                        ][row["PAL"]]
+                    ):
+                        dct[row["min_age"]][row["sex"]][row["maternity"]][row["stage"]][
+                            row["PAL"]
+                        ][row["min_BMI"]] = {}
+                    dct[row["min_age"]][row["sex"]][row["maternity"]][row["stage"]][
+                        row["PAL"]
+                    ][row["min_BMI"]] = {i: str_to_float(row[i]) for i in data_headers}
+                    if str_to_float(row["min_age"]) not in min_ages:
+                        min_ages.append(str_to_float(row["min_age"]))
+                    if row["min_BMI"] != "none":
+                        if str_to_float(row["min_BMI"]) not in min_BMIs:
+                            min_BMIs.append(str_to_float(row["min_BMI"]))
+            min_age = float_to_str(max(age for age in min_ages if age < self.age))
+            sex = self.sex
+            if self.due_date:
+                maternity = "pregnant"
+                stage = str(self.trimester)
+                if self.trimester > 1:
+                    if self.desired_bmi:
+                        min_BMI = str(
+                            max(bmi for bmi in min_BMIs if bmi < self.desired_bmi)
+                        )
+                    elif self.bmi:
+                        min_BMI = str(max(bmi for bmi in min_BMIs if bmi < self.bmi))
+                    else:
+                        min_BMI = "none"
+            elif self.breastfeeding:
+                maternity = "breastfeeding"
+                stage = str(self.breastfeeding)
+                min_BMI = "none"
+            else:
+                maternity = "none"
+                stage = "none"
+                min_BMI = "none"
+            pal = self.pal
+            constant = dct[min_age][sex][maternity][stage][pal][min_BMI]["constant"]
+            age_param = dct[min_age][sex][maternity][stage][pal][min_BMI]["age_param"]
+            height_param = dct[min_age][sex][maternity][stage][pal][min_BMI][
+                "height_param"
+            ]
+            weight_param = dct[min_age][sex][maternity][stage][pal][min_BMI][
+                "weight_param"
+            ]
+            growth_cost = dct[min_age][sex][maternity][stage][pal][min_BMI][
+                "growth_cost"
+            ]
+            gestation_param = dct[min_age][sex][maternity][stage][pal][min_BMI][
+                "gestation_param"
+            ]
+            energy_deposition = dct[min_age][sex][maternity][stage][pal][min_BMI][
+                "energy_deposition"
+            ]
+            milk_production = dct[min_age][sex][maternity][stage][pal][min_BMI][
+                "milk_production"
+            ]
+            energy_mobilization = dct[min_age][sex][maternity][stage][pal][min_BMI][
+                "energy_mobilization"
+            ]
+            if self.desired_weight:
+                weight = self.desired_weight
+            else:
+                weight = self.weight
+            if self.gestation:
+                gestation = self.gestation
+            else:
+                gestation = 0
+            kcal = (
+                constant
+                + (age_param * self.age)
+                + (height_param * self.height)
+                + (weight_param * weight)
+                + growth_cost
+                + (gestation_param * gestation)
+                + energy_deposition
+                + milk_production
+                + energy_mobilization
+            )
+            return kcal
+
+        def rda():
+            dct = {}
+            min_ages = []
+            with open("data/rda.csv") as csvfile:
+                data_headers = list(csv.reader(csvfile))[0]
+                remove_headers = ["min_age", "sex", "maternity"]
+                for i in remove_headers:
+                    data_headers.remove(i)
+            with open("data/rda.csv") as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    if row["min_age"] not in dct:
+                        dct[row["min_age"]] = {}
+                    if row["sex"] not in dct[row["min_age"]]:
+                        dct[row["min_age"]][row["sex"]] = {}
+                    if row["maternity"] not in dct[row["min_age"]][row["sex"]]:
+                        dct[row["min_age"]][row["sex"]][row["maternity"]] = {}
+                    dct[row["min_age"]][row["sex"]][row["maternity"]] = {
+                        i: str_to_float(row[i]) for i in data_headers
+                    }
+                    if str_to_float(row["min_age"]) not in min_ages:
+                        min_ages.append(str_to_float(row["min_age"]))
+            min_age = float_to_str(max(age for age in min_ages if age < self.age))
+            sex = self.sex
+            if self.due_date:
+                maternity = "pregnant"
+            elif self.breastfeeding:
+                maternity = "breastfeeding"
+            else:
+                maternity = "none"
+            rda = dct[min_age][sex][maternity]
+            return rda
+
+        def tul():
+            dct = {}
+            min_ages = []
+            with open("data/tul.csv") as csvfile:
+                data_headers = list(csv.reader(csvfile))[0]
+                remove_headers = ["min_age", "sex", "maternity"]
+                for i in remove_headers:
+                    data_headers.remove(i)
+            with open("data/tul.csv") as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    if row["min_age"] not in dct:
+                        dct[row["min_age"]] = {}
+                    if row["sex"] not in dct[row["min_age"]]:
+                        dct[row["min_age"]][row["sex"]] = {}
+                    if row["maternity"] not in dct[row["min_age"]][row["sex"]]:
+                        dct[row["min_age"]][row["sex"]][row["maternity"]] = {}
+                    dct[row["min_age"]][row["sex"]][row["maternity"]] = {
+                        i: str_to_float(row[i]) for i in data_headers
+                    }
+                    if str_to_float(row["min_age"]) not in min_ages:
+                        min_ages.append(str_to_float(row["min_age"]))
+            min_age = float_to_str(max(age for age in min_ages if age < self.age))
+            sex = self.sex
+            if self.due_date:
+                maternity = "pregnant"
+            elif self.breastfeeding:
+                maternity = "breastfeeding"
+            else:
+                maternity = "none"
+            tul = dct[min_age][sex][maternity]
+            return tul
+
+        def proteins():
+            dct = {}
+            min_ages = []
+            if self.desired_weight:
+                weight = float(self.desired_weight)
+            else:
+                weight = float(self.weight)
+            with open("data/proteins.csv") as csvfile:
+                data_headers = list(csv.reader(csvfile))[0]
+                remove_headers = ["min_age", "sex", "maternity"]
+                for i in remove_headers:
+                    data_headers.remove(i)
+            with open("data/proteins.csv") as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    if row["min_age"] not in dct:
+                        dct[row["min_age"]] = {}
+                    if row["sex"] not in dct[row["min_age"]]:
+                        dct[row["min_age"]][row["sex"]] = {}
+                    if row["maternity"] not in dct[row["min_age"]][row["sex"]]:
+                        dct[row["min_age"]][row["sex"]][row["maternity"]] = {}
+                    dct[row["min_age"]][row["sex"]][row["maternity"]] = {
+                        i: str_to_float(row[i]) * weight for i in data_headers
+                    }
+                    if str_to_float(row["min_age"]) not in min_ages:
+                        min_ages.append(str_to_float(row["min_age"]))
+            min_age = float_to_str(max(age for age in min_ages if age < self.age))
+            sex = self.sex
+            if self.due_date:
+                maternity = "pregnant"
+            elif self.breastfeeding:
+                maternity = "breastfeeding"
+            else:
+                maternity = "none"
+            proteins = dct[min_age][sex][maternity]
+            return proteins
+
+        kcal = kcal()
+
+        def energy_upper():
+            dct = {}
+            min_ages = []
+            kcal_to_gram = {}
+            with open("data/kcal_per_gram.csv") as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    kcal_to_gram[row["name"]] = str_to_float(row["kcal/g"])
+            with open("data/energy_dist_upper.csv") as csvfile:
+                data_headers = list(csv.reader(csvfile))[0]
+                data_headers.remove("min_age")
+            with open("data/energy_dist_upper.csv") as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    if row["min_age"] not in dct:
+                        dct[row["min_age"]] = {}
+                    dct[row["min_age"]] = {
+                        "Total Fat": (str_to_float(row["Total Fat"]) / 100)
+                        * kcal
+                        / kcal_to_gram["Total Fat"],
+                        "n-6 linoleic acid": (
+                            str_to_float(row["n-6 linoleic acid"]) / 100
+                        )
+                        * kcal
+                        / kcal_to_gram["Total Fat"],
+                        "n-3 a-linolenic Acid (ALA)": (
+                            str_to_float(row["n-3 a-linolenic Acid (ALA)"]) / 100
+                        )
+                        * kcal
+                        / kcal_to_gram["Total Fat"],
+                        "Total Carbohydrates": (
+                            str_to_float(row["Total Carbohydrates"]) / 100
+                        )
+                        * kcal
+                        / kcal_to_gram["Total Carbohydrates"],
+                        "Total Protein": (str_to_float(row["Total Protein"]) / 100)
+                        * kcal
+                        / kcal_to_gram["Total Protein"],
+                        "LC-PUFAs": (str_to_float(row["LC-PUFAs"]) / 100)
+                        * kcal
+                        / kcal_to_gram["Total Fat"],
+                    }
+                    if str_to_float(row["min_age"]) not in min_ages:
+                        min_ages.append(str_to_float(row["min_age"]))
+            min_age = float_to_str(max(age for age in min_ages if age < self.age))
+
+            energy_upper = dct[min_age]
+            return energy_upper
+
+        def energy_lower():
+            dct = {}
+            min_ages = []
+            kcal_to_gram = {}
+            with open("data/kcal_per_gram.csv") as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    kcal_to_gram[row["name"]] = str_to_float(row["kcal/g"])
+            with open("data/energy_dist_lower.csv") as csvfile:
+                data_headers = list(csv.reader(csvfile))[0]
+                data_headers.remove("min_age")
+            with open("data/energy_dist_lower.csv") as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    if row["min_age"] not in dct:
+                        dct[row["min_age"]] = {}
+                    dct[row["min_age"]] = {
+                        "Total Fat": (str_to_float(row["Total Fat"]) / 100)
+                        * kcal
+                        / kcal_to_gram["Total Fat"],
+                        "n-6 linoleic acid": (
+                            str_to_float(row["n-6 linoleic acid"]) / 100
+                        )
+                        * kcal
+                        / kcal_to_gram["Total Fat"],
+                        "n-3 a-linolenic Acid (ALA)": (
+                            str_to_float(row["n-3 a-linolenic Acid (ALA)"]) / 100
+                        )
+                        * kcal
+                        / kcal_to_gram["Total Fat"],
+                        "Total Carbohydrates": (
+                            str_to_float(row["Total Carbohydrates"]) / 100
+                        )
+                        * kcal
+                        / kcal_to_gram["Total Carbohydrates"],
+                        "Total Protein": (str_to_float(row["Total Protein"]) / 100)
+                        * kcal
+                        / kcal_to_gram["Total Protein"],
+                        "LC-PUFAs": (str_to_float(row["LC-PUFAs"]) / 100)
+                        * kcal
+                        / kcal_to_gram["Total Fat"],
+                    }
+                    if str_to_float(row["min_age"]) not in min_ages:
+                        min_ages.append(str_to_float(row["min_age"]))
+            min_age = float_to_str(max(age for age in min_ages if age < self.age))
+
+            energy_lower = dct[min_age]
+            return energy_lower
+
+        dct = {}
+        rda = rda()
+        tul = tul()
+        proteins = proteins()
+        energy_lower = energy_lower()
+        energy_upper = energy_upper()
+
+        with open("data/nutrient_keys.tsv") as tsvfile:
+            reader = csv.DictReader(tsvfile, dialect="excel-tab")
+            for row in reader:
+                if row["name"] not in dct:
+                    dct[row["name"]] = {}
+                dct[row["name"]]["unit"] = row["unit"]
+                dct[row["name"]]["nutrient_nbr"] = json.loads(row["nutrient_nbr"])
+                dct[row["name"]]["nutrient_id"] = json.loads(row["nutrient_id"])
+                dct[row["name"]]["amount_lower"] = None
+                dct[row["name"]]["amount_upper"] = None
+                dct[row["name"]]["amount_tul"] = None
+                if row["name"] in rda:
+                    dct[row["name"]]["amount_lower"] = rda[row["name"]]
+                    dct[row["name"]]["amount_upper"] = rda[row["name"]]
+                if row["name"] in tul:
+                    dct[row["name"]]["amount_tul"] = tul[row["name"]]
+                if row["name"] in proteins:
+                    dct[row["name"]]["amount_lower"] = proteins[row["name"]]
+                    dct[row["name"]]["amount_upper"] = proteins[row["name"]]
+
+        dct["Energy"]["amount_lower"] = kcal
+        dct["Energy"]["amount_upper"] = kcal
+        dct["Total Fat"]["amount_lower"] = max(
+            energy_lower["Total Fat"], rda["Total Fat"]
+        )
+        dct["Total Fat"]["amount_upper"] = max(
+            energy_upper["Total Fat"], rda["Total Fat"]
+        )
+        dct["n-6 linoleic acid"]["amount_lower"] = max(
+            energy_lower["n-6 linoleic acid"], rda["n-6 linoleic acid"]
+        )
+        dct["n-6 linoleic acid"]["amount_upper"] = max(
+            energy_upper["n-6 linoleic acid"], rda["n-6 linoleic acid"]
+        )
+        dct["n-3 a-linolenic Acid (ALA)"]["amount_lower"] = max(
+            energy_lower["n-3 a-linolenic Acid (ALA)"],
+            rda["n-3 a-linolenic Acid (ALA)"],
+        )
+        dct["n-3 a-linolenic Acid (ALA)"]["amount_upper"] = max(
+            energy_upper["n-3 a-linolenic Acid (ALA)"],
+            rda["n-3 a-linolenic Acid (ALA)"],
+        )
+        dct["Total Carbohydrates"]["amount_lower"] = max(
+            energy_lower["Total Carbohydrates"], rda["Total Carbohydrates"]
+        )
+        dct["Total Carbohydrates"]["amount_upper"] = max(
+            energy_upper["Total Carbohydrates"], rda["Total Carbohydrates"]
+        )
+        dct["Total Protein"]["amount_lower"] = max(
+            energy_lower["Total Protein"], proteins["Total Protein"]
+        )
+        dct["Total Protein"]["amount_upper"] = max(
+            energy_upper["Total Protein"],
+            rda["Total Protein"],
+            proteins["Total Protein"],
+        )
+        dct["LC-PUFAs"]["amount_lower"] = energy_lower["LC-PUFAs"]
+        dct["LC-PUFAs"]["amount_upper"] = energy_upper["LC-PUFAs"]
+
         return dct
 
     @classmethod
