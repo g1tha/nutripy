@@ -622,6 +622,12 @@ class Person:
         dct["LC-PUFAs"]["amount_lower"] = energy_lower["LC-PUFAs"]
         dct["LC-PUFAs"]["amount_upper"] = energy_upper["LC-PUFAs"]
 
+        min_energy_rqmt =  dct["Total Fat"]["amount_lower"] * 9 + (dct["Total Carbohydrates"]["amount_lower"] + dct["Total Protein"]["amount_lower"]) * 4
+        energy_remainder = kcal - min_energy_rqmt
+        dct["Total Fat"]["amount_upper"] = min(dct["Total Fat"]["amount_upper"], (energy_remainder / 9))
+        dct["Total Carbohydrates"]["amount_upper"] = min(dct["Total Carbohydrates"]["amount_upper"], (energy_remainder / 4))
+        dct["Total Protein"]["amount_upper"] = min(dct["Total Protein"]["amount_upper"], (energy_remainder / 4))
+        
         return dct
 
     @classmethod

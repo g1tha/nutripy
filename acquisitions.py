@@ -341,14 +341,21 @@ def extract_us_energy_dist():
     # Add Long-chain Poly-Unsaturated Fat (LC-PUFAs) requirement of 10% of n-3 and n-6 fatty acids
     energy_distribution["LC-PUFAs"] = "0.56–1.12"
 
+
     # Function to extract part of each string to left (n = 0), or right (n = 1) of '-'.
     def extract_part(s, n):
         return s.split("–")[n]
 
-    # Export lower and upper ranges to CSVs
+    # Seperate upper and lower ranges into two dataframes
     energy_dist_lower = energy_distribution.applymap(extract_part, n=0)
-    energy_dist_lower.to_csv("data/energy_dist_lower.csv")
     energy_dist_upper = energy_distribution.applymap(extract_part, n=1)
+    # Multiply n-3 and n-6 fats by 90% to account for 10% attributed to LC-PUFAs.
+    energy_dist_lower["n-6 linoleic acid"] = energy_dist_lower["n-6 linoleic acid"].apply(lambda x: float(x) *0.9)
+    energy_dist_lower["n-3 a-linolenic Acid (ALA)"] = energy_dist_lower["n-3 a-linolenic Acid (ALA)"].apply(lambda x: float(x) *0.9)
+    energy_dist_upper["n-6 linoleic acid"] = energy_dist_upper["n-6 linoleic acid"].apply(lambda x: float(x) *0.9)
+    energy_dist_upper["n-3 a-linolenic Acid (ALA)"] = energy_dist_upper["n-3 a-linolenic Acid (ALA)"].apply(lambda x: float(x) *0.9)
+    # Export lower and upper ranges to CSVs
+    energy_dist_lower.to_csv("data/energy_dist_lower.csv")
     energy_dist_upper.to_csv("data/energy_dist_upper.csv")
 
 
