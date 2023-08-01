@@ -1,41 +1,63 @@
 import sys
 import os
+import shutil
 import urllib.request
 from zipfile import ZipFile
 import polars as pl
 import pandas as pd
 import requests
 import json
-from rapidfuzz import fuzz, distance, process
+from rapidfuzz import fuzz, distance, process, utils
+import re
+import time
+from datetime import timedelta
 
 
 def main():
     # extract_us_energy_dist()
     # extract_us_nutrient_reqs()
-    download_fda_nutrients()
+    # download_us_food_nutrients()
+    ...
 
 
-def download_fda_nutrients():
-    pl.Config.set_tbl_rows(1000)
+def time_it(func):
+    """
+    Decorator function to return time taken to execute another function.
+    """
+
+    def inner(*args, **kwargs):
+        tic = time.perf_counter()
+        output = func(*args, **kwargs)
+        toc = time.perf_counter()
+        delta = toc - tic
+        duration = timedelta(seconds=delta)
+        print(f"Function {func.__name__} completed in {duration}.")
+        return output
+
+    return inner
+
+
+
+def download_us_food_nutrients():
     # Create filepath if it does not exist
     if not os.path.exists("data/sources"):
         os.makedirs("data/sources")
     # Download food data files
-    # urllib.request.urlretrieve(
-    #     "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_survey_food_csv_2022-10-28.zip",
-    #     "data/sources/FoodData_Central_survey_food_csv.zip",
-    # )
-    # with ZipFile("data/sources/FoodData_Central_survey_food_csv.zip", "r") as archive:
-    #     archive.extractall("data/sources")
-    # os.remove("data/sources/FoodData_Central_survey_food_csv.zip")
+    urllib.request.urlretrieve(
+        "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_survey_food_csv_2022-10-28.zip",
+        "data/sources/FoodData_Central_survey_food_csv.zip",
+    )
+    with ZipFile("data/sources/FoodData_Central_survey_food_csv.zip", "r") as archive:
+        archive.extractall("data/sources")
+    os.remove("data/sources/FoodData_Central_survey_food_csv.zip")
 
-    # urllib.request.urlretrieve(
-    #     "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
-    #     "data/sources/FoodData_Central_legacy_food_csv.zip",
-    # )
-    # with ZipFile("data/sources/FoodData_Central_legacy_food_csv.zip", "r") as archive:
-    #     archive.extractall("data/sources")
-    # os.remove("data/sources/FoodData_Central_legacy_food_csv.zip")
+    urllib.request.urlretrieve(
+        "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+        "data/sources/FoodData_Central_legacy_food_csv.zip",
+    )
+    with ZipFile("data/sources/FoodData_Central_legacy_food_csv.zip", "r") as archive:
+        archive.extractall("data/sources")
+    os.remove("data/sources/FoodData_Central_legacy_food_csv.zip")
 
     # Read survey food (current) and legacy (more detailed) food data from downloaded files
     survey_food = pl.read_csv(
@@ -44,11 +66,17 @@ def download_fda_nutrients():
     legacy_food = pl.read_csv(
         "data/sources/FoodData_Central_sr_legacy_food_csv_2018-04/food.csv"
     ).select(pl.col("fdc_id"), pl.col("description"))
-    # Use fuzzy-matching to find overlapping entries between the 2 datasets
-    matched_food = pl_fuzzy_match(
-        survey_food.select(pl.col("description")),
-        legacy_food.select(pl.col("description")),
+    # Use fuzzy matching to find overlapping entries between the 2 datasets
+    matched_food = fuzzy_match(
+        survey_food["description"],
+        legacy_food["description"],
+        scorer=fuzz.token_sort_ratio,
+        score_cutoff=90,
     )
+    # Replace entries in legacy food with matched survey_food entry and remove any resulting duplicates
+    legacy_food = legacy_food.with_columns(
+        pl.col("description").map_dict(matched_food, default=pl.first())
+    ).unique(subset="description")
     # Survey food data
     # Read the nutrient list used in the survey food dataset
     survey_nutrient = (
@@ -87,8 +115,9 @@ def download_fda_nutrients():
         .filter(pl.col("new_name").is_not_null())
         .filter(pl.col("description").is_not_null())
         .select(pl.col("description"), pl.col("amount"), pl.col("new_name"))
-        .rename({"description":"food", "new_name":"nutrient"})
-        .groupby(["food", "nutrient"]).agg(pl.col("amount").sum())
+        .rename({"description": "food", "new_name": "nutrient"})
+        .groupby(["food", "nutrient"])
+        .agg(pl.col("amount").sum())
     )
 
     # Legacy food data
@@ -129,76 +158,76 @@ def download_fda_nutrients():
         .filter(pl.col("new_name").is_not_null())
         .filter(pl.col("description").is_not_null())
         .select(pl.col("description"), pl.col("amount"), pl.col("new_name"))
-        .rename({"description":"food", "new_name":"nutrient"})
-        .groupby(["food", "nutrient"]).agg(pl.col("amount").sum())
+        .rename({"description": "food", "new_name": "nutrient"})
+        .groupby(["food", "nutrient"])
+        .agg(pl.col("amount").sum())
     )
-    # print(matched_food)
-    joined = survey_food_df.join(legacy_food_df, on=["food", "nutrient"], how="outer", suffix="_legacy").rename({"amount":"amount_survey"})
-    joined = joined.with_columns(pl.when(pl.col("amount_survey").is_null()).then(pl.col("amount_legacy")).otherwise(pl.col("amount_survey")).alias("amount"))
-    print(joined.filter(pl.col("food") == "Eggnog"))
-    # # print(survey_food_df.filter(pl.col("food") == "Cheese, Swiss"))
-    # print(legacy_food_df.filter(pl.col("food") == "Cheese, swiss"))
+    # Create a merged food dataframe from survey and legacy food data
+    merged_food_df = survey_food_df.join(
+        legacy_food_df, on=["food", "nutrient"], how="outer", suffix="_legacy"
+    ).rename({"amount": "amount_survey"})
+    merged_food_df = (
+        merged_food_df.with_columns(
+            pl.when(pl.col("amount_survey").is_null())
+            .then(pl.col("amount_legacy"))
+            .otherwise(pl.col("amount_survey"))
+            .alias("amount")
+        )
+        .drop("amount_survey", "amount_legacy")
+        .pivot(
+            values="amount", index="food", columns="nutrient", aggregate_function=None
+        )
+    )
+    # Export food list and dataframe to parquet files
+    merged_food_df.select("food").write_parquet("data/sources/food_list.parquet")
+    merged_food_df.write_parquet("data/sources/food_nutrients.parquet")
+    # Remove downloaded files
+    shutil.rmtree("data/sources/FoodData_Central_survey_food_csv_2022-10-28/")
+    shutil.rmtree("data/sources/FoodData_Central_sr_legacy_food_csv_2018-04/")
 
 
-def pl_fuzzy_match(df1, df2, method=fuzz.ratio, tolerance=85):
+def fuzzy_match(list1, list2, scorer=fuzz.ratio, score_cutoff=90):
     """
-    For 2 Polars dataframes, each with one column only, returns a Polars dataframe with fuzz-matched values between the 2 column.
-    Uses pandas and rapidfuzz (fastest combination I could find for using lambda-apply).
+    Returns a dictionary of matched pairs from 2 lists.
     Refer to rapidfuzz docs for fuzzy match methods available, and the range of scores that can be outputted for that method (to use in the 'tolerance' argument).
+    To reduce processing time, this function creates lists with pre-processed strings instead of using the processor kwarg in the rapidfuzz.process.extractOne method.
     """
-    # Check dataframes are each single column
-    if ((df1.width) == 1) and ((df2.width) == 1):
-        # Insert columns to each dataframe which strips out all non alphabetic characters and converts all to lowercase.
-        # This will be used as the basis of the fuzzy match.
-        df1 = df1.with_columns(
-            (
-                pl.first()
-                .str.to_lowercase()
-                .str.replace_all(r"[^a-z ]", "")
-                .str.to_lowercase()
-            ).alias("df1_strip")
+    # Preprocess (e.g. remove non-alphabetic characters) of each list and create dictionaries for matching later on.
+    list1_strip = []
+    list1_key = {}
+    list2_strip = []
+    list2_key = {}
+    for i in list1:
+        list1_strip.append(utils.default_process(i))
+        list1_key[utils.default_process(i)] = i
+    for i in list2:
+        list2_strip.append(utils.default_process(i))
+        list2_key[utils.default_process(i)] = i
+    # For each item in list1 (stripped) find matches that meet
+    # the matching score cutoff in list2 (stripped).
+    list2_match = []
+    for i in list1_strip:
+        row = process.extractOne(
+            query=i, choices=list2_strip, scorer=scorer, score_cutoff=score_cutoff
         )
-        df2 = df2.with_columns(
-            (pl.first().str.to_lowercase().str.replace_all(r"[^a-z ]", "")).alias(
-                "df2_strip"
-            )
+        if row:
+            list2_match.append(row[0])
+    # For each list2 item from the list of matches from list1 to list2
+    # find matches that best match back to list1.
+    list2_1_match = {}
+    for i in list2_match:
+        row = process.extractOne(
+            query=i, choices=list1_strip, scorer=scorer, score_cutoff=score_cutoff
         )
-        # Convert Polars dataframe to Pandas
-        df2_pd = df2.to_pandas()
-        df1_pd = df1.to_pandas()
-        # Create a new matching dataframe based on df2
-        merge = df2_pd.copy()
-        # Add column where values are equal to the best match from df1, for each value from df2
-        merge["df1_match"] = merge["df2_strip"].apply(
-            lambda x: process.extractOne(x, df1_pd["df1_strip"], scorer=method)[0]
-        )
-        # Add another column where values are equal to the best match from df2, for each value that was returned from the match to df1.
-        merge["df1_match_2_match"] = merge["df1_match"].apply(
-            lambda x: process.extractOne(x, merge["df2_strip"], scorer=method)[0]
-        )
-        # Filter to capture only where match back to df2 equals the original(stripped) value from df2.
-        # These filtered results represent the best unique match between the two dataframes
-        merge = merge[merge.df2_strip == merge.df1_match_2_match]
-        # Add a calculated column which equals the score for the fuzzy match between the value in df2 ("df2_strip") and df1 (sourced from "df1_match")
-        merge.loc[:, "fuzz"] = merge[["df1_match", "df2_strip"]].apply(
-            lambda x: method(*x), axis=1
-        )
-        # Filter only for scores above the set tolerence.
-        merge = merge[((merge.fuzz > tolerance))]
-        # Merge with df1_pd to only select the original columns of each dataframe
-        merge = pd.merge(
-            df1_pd,
-            merge,
-            left_on="df1_strip",
-            right_on=f"df1_match",
-            how="inner",
-            suffixes=("_df1", "_df2"),
-        )
-        merge = merge[[f"{df1_pd.columns[0]}_df1", f"{df2_pd.columns[0]}_df2"]]
-        # Return a Polars dataframe from the Pandas dataframe.
-        return pl.from_pandas(merge)
-    else:
-        raise ValueError("Ensure both Polar dataframes have only a single column each")
+        if row:
+            list2_1_match[i] = row[0]
+    # Create a dictionary with the matches using the original (unstripped) strings from each list.
+    # Because it is a dictionary, duplicates replace existing values.
+    result = {}
+    for i in list2_1_match:
+        result[list2_key[i]] = list1_key[list2_1_match[i]]
+
+    return result
 
 
 def extract_us_nutrient_reqs():
