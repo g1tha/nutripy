@@ -16,7 +16,7 @@ from datetime import timedelta
 def main():
     # extract_us_energy_dist()
     # extract_us_nutrient_reqs()
-    # download_us_food_nutrients()
+    extract_us_food_nutrients()
     ...
 
 
@@ -38,7 +38,7 @@ def time_it(func):
 
 
 
-def download_us_food_nutrients():
+def extract_us_food_nutrients():
     # Create filepath if it does not exist
     if not os.path.exists("data/sources"):
         os.makedirs("data/sources")
@@ -178,9 +178,15 @@ def download_us_food_nutrients():
             values="amount", index="food", columns="nutrient", aggregate_function=None
         )
     )
+    # Create a per kcal table
+    # Create 0 kcal subset, cast this down to nutrients/g instead of nutrients/100g.
+    zero_cal = merged_food_df.filter(pl.col("Energy") == 0).with_columns(pl.exclude("food").truediv(100))
+    other_cal = merged_food_df.filter(pl.col("Energy") > 0).with_columns(pl.exclude("food").truediv(pl.col("Energy")))
+    merged_food_df_cal = pl.concat([other_cal, zero_cal])
     # Export food list and dataframe to parquet files
     merged_food_df.select("food").write_parquet("data/sources/food_list.parquet")
     merged_food_df.write_parquet("data/sources/food_nutrients.parquet")
+    merged_food_df_cal.write_parquet("data/sources/food_nutrients_cal.parquet")
     # Remove downloaded files
     shutil.rmtree("data/sources/FoodData_Central_survey_food_csv_2022-10-28/")
     shutil.rmtree("data/sources/FoodData_Central_sr_legacy_food_csv_2018-04/")
