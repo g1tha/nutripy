@@ -3,23 +3,28 @@ import csv
 import json
 import polars as pl
 import curses
+import re
 
 
 def main():
-    curses.wrapper(search_food)
+    food = curses.wrapper(search_food)
+    print(food)
     # with open('dct.json', 'w') as file:
     #   json.dump(dct, file)
 
 
 def search_food(stdscr):
+    # Set colors to match terminal defaults
+    curses.use_default_colors()
     # Read parquet food files
     food_list = pl.read_parquet("data/sources/food_list.parquet")
     food_list = food_list.with_columns(
         pl.col("food")
         .str.to_lowercase()
-        .str.replace_all(r"[^a-z. ]", "")
+        .str.replace_all(r"[^a-z.]", "")
         .alias("food_strip")
     )
+    filtered_food = food_list
     food_nutrients = pl.read_parquet("data/sources/food_nutrients.parquet")
     prompt = "Enter food search term (or press the 'esc' key to quit): "
     user_input = ""
@@ -36,32 +41,38 @@ def search_food(stdscr):
 
     while True:
         key = stdscr.getch()
-        # exit if escape key (27) is hit
+        # exit if escape key (27) is hit, return nothing
         if key == 27:
-            break
+            return None
+        # If enter key (10) hit, return 1st entry of 
+        # filtered food, otherwise return none
         elif key == 10:  # Enter key pressed
-            pad.addstr(1, 0, " " * curses.COLS)  # Clear the previous result
-            user_input = ""  # Reset user input
+            if pl.count(filtered_food["food"]) > 0:
+                user_input = filtered_food.item(row=0, column="food")
+                return user_input
+            else:
+                return None
+        # If tab key (9) is hit, autocomplete
+        # based on 1st entry of filtered food
+        elif key == 9: # Tab key pressed
+            if pl.count(filtered_food["food"]) > 0:
+                user_input = filtered_food.item(row=0, column="food")
         elif key == curses.KEY_BACKSPACE:
+            stdscr.addstr(0, (len(prompt)+ len(user_input)), (width - len(prompt) - len(user_input)) * " ")
             user_input = user_input[:-1]  # Remove the last character
         else:
+            stdscr.addstr(0, (len(prompt)+ len(user_input)), (width - len(prompt) - len(user_input)) * " ")
             user_input += chr(key)  # Add the pressed character to user input
         if user_input:
+            user_input_stripped = re.sub(r"[^a-z.]", "", user_input.lower())
             food_begins = food_list.filter(
-                pl.col("food_strip")
-                .str.starts_with(user_input
-                .lower()
-                .replace(r"[^a-z. ]", ""))
+                pl.col("food_strip").str.starts_with(user_input_stripped)
             )
             food_contains = food_list.filter(
-                ~pl.col("food_strip")
-                .str.starts_with(user_input
-                .lower()
-                .replace(r"[^a-z. ]", ""))
-            ).filter(
-                pl.col("food_strip").str.contains(user_input.lower().replace(r"[^a-z. ]", ""))
-            )
+                ~pl.col("food_strip").str.starts_with(user_input_stripped)
+            ).filter(pl.col("food_strip").str.contains(user_input_stripped))
             filtered_food = pl.concat([food_begins, food_contains])
+            pad.erase()
             line = 0
             for count, value in enumerate(filtered_food["food"]):
                 if count < height - 1:
